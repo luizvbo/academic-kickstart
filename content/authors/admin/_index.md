@@ -15,7 +15,7 @@ role: Data Scientist
 # Organizations/Affiliations
 organizations:
 - name: ING WBAA (Wholesale Bank Advanced Analytics)
-  url: "http://ing.com"
+  url: "https://ing.com"
 
 # Short bio (displayed in user profile at end of posts)
 bio: A Brazilian in the Netherlands solving problems using data.

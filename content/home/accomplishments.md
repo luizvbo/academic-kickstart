@@ -19,33 +19,58 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[item]]
-  organization = "Coursera"
-  organization_url = "https://www.coursera.org"
-  title = "Neural Networks and Deep Learning"
-  url = ""
-  certificate_url = "https://www.coursera.org"
-  date_start = "2018-10-01"
+  organization = "Genetic and Evolutionary Computation Conference (GECCO'18)"
+  organization_url = ""
+  title = "Nomination for Best Paper Award"
+  url = "http://gecco-2018.sigevo.org/index.html/tiki-indexd083.html?page=Best+Paper+Nominations"
+  certificate_url = ""
+  date_start = "2017-07-01"
   date_end = ""
-  description = ""
+  description = """
+  *Solving the Exponential Growth of Symbolic Regression Trees in Geometric Semantic Genetic Programming*
+
+  Joao Francisco Martins, **Luiz Otavio V. B. Oliveira**, Luis Fernando Miranda, Felipe Casadei, Gisele Pappa
+  """
 
 [[item]]
-  organization = "edX"
-  organization_url = "https://www.edx.org"
-  title = "Blockchain Fundamentals"
-  url = "https://www.edx.org/professional-certificate/uc-berkeleyx-blockchain-fundamentals"
-  certificate_url = "https://www.edx.org"
-  date_start = "2018-03-01"
-  date_end = ""
-  description = "Formulated informed blockchain models, hypotheses, and use cases."
-  
-[[item]]
-  organization = "DataCamp"
-  organization_url = "https://www.datacamp.com"
-  title = "Object-Oriented Programming in R: S3 and R6 Course"
-  url = ""
-  certificate_url = "https://www.datacamp.com"
+  organization = "Genetic and Evolutionary Computation Conference (GECCO'17)"
+  organization_url = ""
+  title = "Nomination for Best Paper Award"
+  url = "http://gecco-2017.sigevo.org/index.html/Best%2BPaper%2BNominations.html"
+  certificate_url = ""
   date_start = "2017-07-01"
-  date_end = "2017-12-21"
-  description = ""
+  date_end = ""
+  description = """
+  *How Noisy Data Affects Geometric Semantic Genetic Programming*
+
+  Luis F. Miranda, **Luiz Otavio V. B. Oliveira**, Joao Francisco B. S. Martins, Gisele L. Pappa
+  """
+
+[[item]]
+  organization = "Genetic and Evolutionary Computation Conference (GECCO'16)"
+  organization_url = ""
+  title = "Best Paper Award"
+  url = "http://gecco-2016.sigevo.org/index.html/Best%2BPaper%2BAwards.html"
+  certificate_url = ""
+  date_start = "2016-07-01"
+  date_end = ""
+  description = """
+  *A Dispersion Operator for Geometric Semantic Genetic Programming*
+
+  **Luiz Otavio V. B. Oliveira**, Fernando E. B. Otero, Gisele Lobo Pappa
+  """
+
+[[item]]
+  organization = "European Conference on Genetic Programming (EuroGP'15)"
+  organization_url = "http://www.evostar.org/2015/"
+  title = "Nomination for Best Paper Award"
+  url = "http://www.evostar.org/2015/cfp_eurogp.php#best"
+  certificate_url = ""
+  date_start = "2015-04-01"
+  date_end = ""
+  description = """
+  *The Effect of Distinct Geometric Semantic Crossover Operators in Regression Problems*
+
+  Julio Albinati, Gisele Lobo Pappa, **Luiz Otavio V. B. Oliveira**, Fernando Otero"""
 
 +++

@@ -27,7 +27,8 @@ date_format = "Jan 2006"
   description = """
   - Name matching project: Fuzzy matching millions of names using multiple stages (cosine similarity + MLP on (py)Spark)
   - Name screening: Reducing false positives from name screening using Levenshtein distance, cos. similarity, Jaro-Winkler for feature extraction with LightGBM
-  - "Fraud" detection: Anomaly detection (One-class SVM, Isolation Forest), address parsing (libpostal), database statistics monitor
+  - Anomaly detection (One-class SVM, Isolation Forest), address parsing (libpostal), database statistics monitor
+  - Snorkel labelling:  Predicting label dependencies using robust PCA
   """
 
 [[experience]]

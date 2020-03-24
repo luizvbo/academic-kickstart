@@ -1,5 +1,5 @@
 ---
-title: Visualizing the number of COVID-19 recovered cases with Plotly
+title: Visualizing the number of COVID-19 deaths with Plotly
 date: 2020-03-21
 ---
 
@@ -15,10 +15,10 @@ The data is split into three plots:
 - [COVID-19 deaths](../coronavirus-death)
 - [COVID-19 recovered cases](../coronavirus-recovered)
 
-Bellow, you can see the data for all the **recovered cases** (total and per day).
+Bellow, you can see the data for the **deaths** caused by COVID-19 (total and per day).
 
-You can select countries to compare the data. If you are having problems to visualise the plot, you can try the [clean html version from this link](../coronavirus-recovered/plot-recovered.html)
+You can select countries to compare the data. If you are having problems to visualise the plot, you can try the [clean html version from this link](../coronavirus-death/plot-death.html)
 
 <iframe id="igraph" scrolling="no" style="border:none;"
-        seamless="seamless" src="plot-recovered.html" height="1500px" width="100%">
+        seamless="seamless" src="plot-death.html" height="1500px" width="100%">
 </iframe>'

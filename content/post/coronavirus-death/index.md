@@ -20,5 +20,5 @@ Bellow, you can see the data for the **deaths** caused by COVID-19 (total and pe
 You can select countries to compare the data. If you are having problems to visualise the plot, you can try the [clean html version from this link](../coronavirus-death/plot-death.html)
 
 <iframe id="igraph" scrolling="no" style="border:none;"
-        seamless="seamless" src="plot-death.html" height="1500px" width="100%">
+        seamless="seamless" src="plot-death.html" height="800px" width="100%">
 </iframe>'

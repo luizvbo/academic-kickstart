@@ -17,8 +17,10 @@ The data is split into three plots:
 
 Bellow, you can see the data for all the **recovered cases** (total and per day).
 
+**NOTE**: Starting from 25/03/2020, the JHU CSSE is not updating the number of recovered cases anymore. Thus, the plot bellow will not be updated anymore.
+
 You can select countries to compare the data. If you are having problems to visualise the plot, you can try the [clean html version from this link](../coronavirus-recovered/plot-recovered.html)
 
 <iframe id="igraph" scrolling="no" style="border:none;"
-        seamless="seamless" src="plot-recovered.html" height="1500px" width="100%">
+        seamless="seamless" src="plot-recovered.html" height="800px" width="100%">
 </iframe>'

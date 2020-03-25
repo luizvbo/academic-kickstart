@@ -21,5 +21,5 @@ Bellow, you can see the data for all the **confirmed cases** (total and per day)
 You can select countries to compare the data. If you are having problems to visualise the plot, you can try the [clean html version from this link](../coronavirus-confirmed/plot-confirmed.html)
 
 <iframe id="igraph" scrolling="no" style="border:none;"
-        seamless="seamless" src="plot-confirmed.html" height="1500px" width="100%">
+        seamless="seamless" src="plot-confirmed.html" height="800px" width="100%">
 </iframe>'

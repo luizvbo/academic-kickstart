@@ -46,23 +46,26 @@ import io
 from multiprocessing import Pool
 from tqdm import tqdm
 from lxml import etree
+import bz2
 from bz2 import BZ2Decompressor
 from typing import (
     List, Generator
 )
 
+VERSION = '20200420'
+
 # Path to the bz2 files with Wikipedia data
-path_articles = 'enwiki-20200201-pages-articles-multistream.xml.bz2'
+path_articles = f'enwiki-{VERSION}-pages-articles-multistream.xml.bz2'
 # Path to the index list from Wikipedia
-path_index = 'enwiki-20200201-pages-articles-multistream-index.txt'
+path_index = f'enwiki-{VERSION}-pages-articles-multistream-index.txt.bz2'
 # Path to our cached version (for offsets)
-path_index_clean = 'enwiki-20200201-pages-articles-multistream-index_clean.txt'
+path_index_clean = f'enwiki-{VERSION}-pages-articles-multistream-index_clean.txt'
 # Path to the output parquet file
-path_wiki_parquet = 'wikipedia.parquet'
+path_wiki_parquet = 'wiki_parquet/'
 # Number of processors to be used during processing
 n_processors = 16
 # Number of blocks of pages to be processed per iteration per processor
-n_parallel_blocks = 15
+n_parallel_blocks = 20
 ```
 
 The multistream dump file contains multiple bz2 'streams' (bz2 header, body, footer) concatenated together into one file, in contrast to the vanilla file which contains one stream. Each separate 'stream' (or really, file) in the multistream dump contains 100 pages, except possibly the last one. The multistream file allows you to get an article from the archive without unpacking the whole thing.
@@ -84,6 +87,7 @@ def get_page_offsets(path_index: str, path_index_clean: str) -> List[int]:
 
     Args:
         path_index (str): Path to the original index file provided by Wikipedia
+            (bz2 compressed version)
         path_index_clean (str): Path to our version, containing only offsets
 
     Returns:
@@ -96,9 +100,13 @@ def get_page_offsets(path_index: str, path_index_clean: str) -> List[int]:
         # Read the byte offsets from the index file
         page_offset = []
         last_offset = None
-        with open(path_index, 'r') as f:
-            for line in tqdm(f):
-                offset = line.split(':', 1)[0]
+        with open(path_index, 'rb') as f:
+            b_data = bz2.decompress(f.read()).split(b'\n')
+            # Drop the last line (empty)
+            if b_data[-1] == b'':
+                b_data = b_data[:-1]
+            for line in tqdm(b_data):
+                offset = line.decode().split(':', 1)[0]
                 if last_offset != offset:
                     last_offset = offset
                     page_offset.append(int(offset))
@@ -174,12 +182,17 @@ def get_articles(byte_string_compressed: bytes) -> pd.DataFrame:
     col_title = _get_text(doc.xpath('*/title'))
     col_article = _get_text(doc.xpath('*/revision/text'))
 
-    return pd.DataFrame([col_title, col_article], columns=col_id, index=['title', 'article']).T
+    df = pd.DataFrame([col_id, col_title, col_article],
+                      index=['index', 'title', 'article']).T
+    df['index'] = df['index'].astype(np.int32)
+    return df
 ```
 
 ## Reading and storing in parquet files
 
 We read the blocks of the bz2 file, extract the data and write to parquet files. In order to speed up the process we use a queue to store the blocks of bytes that are processed in parallel.
+
+I was having problems to load the index using **dask**, so I decided to store it as a column and drop the pd.DataFrame index.
 
 
 ```python
@@ -208,25 +221,25 @@ def _process_parallel(list_bytes: List[bytes]) -> None:
         list_bytes (List[bytes]): List of byte strings (chunks from the
             original file)
     """
-
     df = pd.concat([get_articles(article) for article in list_bytes])
+    output_path = (
+        os.path
+        .join(path_wiki_parquet,
+              '{:08d}.parquet'.format(df['index'].values[0]))
+    )
 
-    # Create a parquet table from your dataframe
-    table = pa.Table.from_pandas(df)
-
-    # Write direct to your parquet file
-    pq.write_to_dataset(table, root_path=path_wiki_parquet, compression='BROTLI')
+    # Save the index as a column and ignore the df index
+    df.to_parquet(output_path, compression='snappy', index=False)
 
     # Clear the data tables
     del df
-    del table
 ```
 
 The code bellow stores each block of 100 articles in a new parquet file. It allows you to load a subset of the full dump or work using [Dask](https://github.com/dask/dask), [Modin](https://github.com/modin-project/modin) or [pySpark](https://spark.apache.org/docs/latest/api/python/index.html).
 
-I am using [BROTLI](https://github.com/google/brotli) to reduce the amount of space used by the extracted data.
+I am using [Snappy](https://en.wikipedia.org/wiki/Snappy_(compression)) to reduce the amount of space used by the extracted data.
 
-> Brotli is a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods.
+> Snappy (previously known as Zippy) is a fast data compression and decompression library written in C++ by Google based on ideas from LZ77 and open-sourced in 2011. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression.
 
 
 ```python

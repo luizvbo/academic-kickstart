@@ -22,3 +22,13 @@ You can select countries to compare the data. If you are having problems to visu
 <iframe id="igraph" scrolling="no" style="border:none;"
         seamless="seamless" src="plot-death.html" height="800px" width="100%">
 </iframe>'
+
+# Data Shifted to Origin
+
+I have been seeing plots where they compare the number of new cases/deaths among different countries by moving the origin of the plots the day of the first case/death. Thus, I did the same for the plot above: all the data points are shifted in the horizontal axis such that the origin corresponds to first case/death for that country:
+
+**NOTE**: The data IS NOT normalised by the population size.
+
+<iframe id="igraph" scrolling="no" style="border:none;"
+        seamless="seamless" src="plot-death-origin.html" height="800px" width="100%">
+</iframe>'

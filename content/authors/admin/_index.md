@@ -63,6 +63,9 @@ social:
 # Enter email to display Gravatar (if Gravatar enabled in Config)
 email: ""
 
+# Highlight the author in author lists? (true/false)
+highlight_name: false
+
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
@@ -72,4 +75,3 @@ user_groups:
 
 I am a Data Scientist working for ING Wholesale Bank Advanced Analytics (WBAA) in Amsterdam.
 
-I have been working with Machine Learning, Natural Language Processing and Evolutionary Computation in Academia and Industry for the past 10 years with publications in the main Evolutionary Computation conferences (GECCO, CEC, PPSN, EvoStar).

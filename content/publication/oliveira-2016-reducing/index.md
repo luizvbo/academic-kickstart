@@ -1,7 +1,7 @@
 ---
 title: Reducing Dimensionality to Improve Search in Semantic Genetic Programming
 date: '2016-01-01'
-publishDate: '2021-05-04T19:15:53.061412Z'
+publishDate: '2021-05-04T19:20:54.131480Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Luis F. Miranda

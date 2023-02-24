@@ -2,7 +2,7 @@
 title: 'Clonal selection classifier with data reduction: Classification as an optimization
   task'
 date: '2012-01-01'
-publishDate: '2021-05-04T19:15:52.329777Z'
+publishDate: '2021-05-04T19:20:53.563437Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Rodrigo Luiz Mendes Mota

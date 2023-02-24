@@ -1,7 +1,7 @@
 ---
 title: A Dispersion Operator for Geometric Semantic Genetic Programming
 date: '2016-01-01'
-publishDate: '2021-05-04T19:15:51.994878Z'
+publishDate: '2021-05-04T19:20:53.239463Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Fernando E. B. Otero

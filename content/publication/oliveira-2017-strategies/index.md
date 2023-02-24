@@ -1,7 +1,7 @@
 ---
 title: Strategies for Improving the Distribution of Random Function Outputs in GSGP
 date: '2017-01-01'
-publishDate: '2021-05-04T19:15:53.539615Z'
+publishDate: '2021-05-04T19:20:54.517207Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Felipe Casadei

@@ -1,7 +1,7 @@
 ---
 title: Real-Valued Negative Selection (RNS) for Classification Task
 date: '2010-01-01'
-publishDate: '2021-05-04T19:15:52.715445Z'
+publishDate: '2021-05-04T19:20:53.884540Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Isabela Neves Drummond

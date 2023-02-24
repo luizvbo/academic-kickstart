@@ -1,7 +1,7 @@
 ---
 title: How Noisy Data Affects Geometric Semantic Genetic Programming
 date: '2017-01-01'
-publishDate: '2021-05-04T19:15:52.501364Z'
+publishDate: '2021-05-04T19:20:53.725861Z'
 authors:
 - Luis F. Miranda
 - Luiz Otavio V. B. Oliveira

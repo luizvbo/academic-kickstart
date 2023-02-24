@@ -1,7 +1,7 @@
 ---
 title: Sequential Symbolic Regression with Genetic Programming
 date: '2015-01-01'
-publishDate: '2021-05-04T19:15:53.292140Z'
+publishDate: '2021-05-04T19:20:54.305450Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Fernando E. B. Otero

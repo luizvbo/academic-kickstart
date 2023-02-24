@@ -2,7 +2,7 @@
 title: The Effect of Distinct Geometric Semantic Crossover Operators in Regression
   Problems
 date: '2015-01-01'
-publishDate: '2021-05-04T19:15:53.647462Z'
+publishDate: '2021-05-04T19:20:54.633165Z'
 authors:
 - Julio Albinati
 - Gisele L. Pappa

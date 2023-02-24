@@ -1,7 +1,7 @@
 ---
 title: A Generic Framework for Building Dispersion Operators in the Semantic Space
 date: '2017-01-01'
-publishDate: '2021-05-04T19:15:52.077627Z'
+publishDate: '2021-05-04T19:20:53.321629Z'
 authors:
 - Luiz Otavio V. B. Oliveira
 - Fernando E. B. Otero

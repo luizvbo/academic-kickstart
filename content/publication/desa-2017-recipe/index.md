@@ -2,7 +2,7 @@
 title: 'RECIPE: A Grammar-Based Framework for Automatically Evolving Classification
   Pipelines'
 date: '2017-01-01'
-publishDate: '2021-05-04T19:15:52.950033Z'
+publishDate: '2021-05-04T19:20:54.044568Z'
 authors:
 - Alex G. C. de Sá
 - Walter José G. S. Pinto

@@ -2,7 +2,7 @@
 title: Solving the Exponential Growth of Symbolic Regression Trees in Geometric Semantic
   Genetic Programming
 date: '2018-07-01'
-publishDate: '2021-05-04T19:15:53.408319Z'
+publishDate: '2021-05-04T19:20:54.400478Z'
 authors:
 - Joao Francisco B. S. Martins
 - Luiz Otavio V. B. Oliveira

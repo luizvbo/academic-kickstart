@@ -1,6 +1,5 @@
-
 ---
-title: Learning by Example: How to get the path to the user data folder (Python)
+title: Learning by Example - How to get the path to the user data folder (Python)
 date: 2023-02-24
 ---
 # Introduction

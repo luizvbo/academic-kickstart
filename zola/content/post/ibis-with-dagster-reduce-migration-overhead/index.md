@@ -90,10 +90,14 @@ flowchart TD
 The entire engine/env selection is two environment variables:
 
 ```bash
-DAGSTER_DEPLOYMENT_NAME=local  dagster dev   # duckdb + local CSVs
-DAGSTER_DEPLOYMENT_NAME=polars dagster dev   # polars + same CSVs
-DAGSTER_DEPLOYMENT_NAME=prod   dagster dev   # pyspark + parquet "lake" sources
+DAGSTER_DEPLOYMENT_NAME=local  uv run dagster dev   # duckdb + local CSVs
+DAGSTER_DEPLOYMENT_NAME=polars uv run dagster dev   # polars + same CSVs
+DAGSTER_DEPLOYMENT_NAME=prod   uv run dagster dev   # pyspark + parquet "lake" sources
 ```
+
+(The repo wraps these as `just dev <local|polars|prod>`; `dev prod` first
+seeds a local parquet lake under `data/lake/` from the CSVs — `just
+seed-lake` — and prod also needs the `pyspark` extra plus a JDK.)
 
 Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME` — Dagster+ sets it automatically; on a self-hosted OSS deployment it's just another env var on your code location).
 
@@ -144,10 +148,11 @@ The thing dbt users ask about first is `dbt test`. Dagster's `@asset_check` is t
 ```python
 @dg.asset_check(asset=cleaned_events, blocking=True)
 def cleaned_events_no_null_user_ids(ibis: IbisResource) -> dg.AssetCheckResult:
-    t = ibis.connect().table("cleaned_events")
-    n_bad = t.filter(_.user_id.isnull()).count().execute()
-    return dg.AssetCheckResult(passed=n_bad == 0, metadata={"null_user_ids": n_bad})
+    n = _violations(ibis, "cleaned_events", _.user_id.isnull())
+    return dg.AssetCheckResult(passed=n == 0, metadata={"null_user_ids": n})
 ```
+
+(`_violations` is a small helper: `int(con.table(table).filter(predicate).count().execute())` on the run's backend.)
 
 <!-- IMAGE: screenshot of the Checks tab / a run showing the 8 asset checks green -->
 
@@ -172,7 +177,7 @@ This is the part that sells it. The same `daily_active_users(clean_events(raw_ev
 
 <!-- IMAGE: optional — screenshot of a materialization's metadata tab showing the compiled SQL recorded on the run -->
 
-This isn't just a demo trick. `ibis.<backend>.compile()` works without connecting, so a `pytest` file that compiles every transform against every target dialect is a **CI guardrail**. If someone adds an operation your production engine can't express, it fails before deployment, not after.
+This isn't just a demo trick. `ibis.<backend>.compile()` works without connecting, so a `pytest` file that compiles every transform against every target dialect is a **CI guardrail**. If someone adds an operation your production engine can't express, it fails before deployment, not after. The repo wires this in concretely: a `prek` pre-push hook runs lint (ruff), type-checking (ty), and that test suite on every push.
 
 ## The honest part: portability has edges
 

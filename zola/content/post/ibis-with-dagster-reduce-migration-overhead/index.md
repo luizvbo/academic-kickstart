@@ -9,14 +9,13 @@ mermaid = true
 
 # Portable data pipelines with Dagster + Ibis: making migrations less painful
 
-{% <mermaid> %}
-flowchart TB
-    code["same pipeline code<br/>assets + ibis expressions (written once)"]
-    code -->|"deployment config swaps engine + storage"| dep
+{% <mermaid full_width={true}> %}
+flowchart LR
+    code["same pipeline code<br/>assets + ibis expressions<br/>(written once)"]
+    code -->|"deployment config<br/>swaps engine + storage"| dep
     subgraph dep["pick a backend"]
-        direction LR
-        a["duckdb<br/>local csv files"] ~~~ b["polars<br/>same csv files"]
-        c["pyspark<br/>parquet lake"] ~~~ d["bigquery, trino, ...<br/>one more config entry"]
+        direction TB
+        a["duckdb<br/>local csv files"] ~~~ b["polars<br/>same csv files"] ~~~ c["pyspark<br/>parquet lake"] ~~~ d["bigquery, trino, ...<br/>one more config entry"]
     end
 {% </mermaid> %}
 
@@ -66,8 +65,8 @@ Repo: <!-- TODO: link to the repo -->
 
 A deliberately ordinary bronze → silver → gold pipeline:
 
-{% <mermaid> %}
-flowchart TD
+{% <mermaid full_width={true}> %}
+flowchart LR
     subgraph sources["external sources: csv locally, parquet/tables in production"]
         events_csv
         products_csv

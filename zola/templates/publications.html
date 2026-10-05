@@ -28,13 +28,15 @@
     } -%}
 
     <div class="bloglist-container">
-        {%- set prev_year = "" -%}
         {%- for e in entries -%}
-            {%- if e.tags.title and e.tags.year and e.tags.year != prev_year -%}
-                {%- set_global prev_year = e.tags.year -%}
-                <h2 class="listing-title">{{ e.tags.year }}</h2>
-            {%- endif -%}
+            {%- if e.tags.title -%}
+            <section class="bloglist-meta bottom-divider">
+                <ul>
+                    {%- if e.tags.year -%}<li class="date">{{ e.tags.year }}</li>{%- endif -%}
+                </ul>
+            </section>
             <section class="bloglist-content bottom-divider">
+                <div>
                 <h3 class="bloglist-title">{{< bibtex_clean s={e.tags.title} />}}</h3>
                 <div class="description">
                     <p>
@@ -63,7 +65,9 @@
                     </details>
                     {%- endif -%}
                 </div>
+                </div>
             </section>
+            {%- endif -%}
         {%- endfor -%}
     </div>
 </main>

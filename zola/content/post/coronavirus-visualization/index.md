@@ -1,6 +1,7 @@
 ---
 title: Visualizing COVID-19 infection (corona virus) over time
 date: 2020-03-12
+description: "Exploring and visualizing COVID-19 infection data over time with Python."
 ---
 
 # Exploring COVID-19

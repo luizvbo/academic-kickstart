@@ -1,6 +1,7 @@
 ---
 title: Learning by Example - How to get the path to the user data folder (Python)
 date: 2023-02-24
+description: "How to get the path to the user data folder in Python, learning from Label Studio's implementation."
 ---
 # Introduction
 

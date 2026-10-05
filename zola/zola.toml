@@ -66,7 +66,10 @@ favicon_emoji = "📊"
 
 menu = [
     { name = "posts", url = "post", trailing_slash = true },
+    { name = "experience", url = "/#experience", trailing_slash = false },
+    { name = "accomplishments", url = "/#accomplishments", trailing_slash = false },
     { name = "publications", url = "publication", trailing_slash = true },
+    { name = "contact", url = "/#contact", trailing_slash = false },
     { name = "archive", url = "archive", trailing_slash = true },
     { name = "about", url = "about", trailing_slash = true },
 ]

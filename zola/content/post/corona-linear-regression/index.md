@@ -1,6 +1,7 @@
 ---
 title: Predicting COVID-19 Deaths by Similarity
 date: 2020-05-11
+description: "Predicting COVID-19 deaths by finding countries with similar pandemic trajectories and fitting linear regressions between their time series."
 ---
 
 I have been seen some discussion about epidemiologic models to predict the number of cases and deaths by COVID-19, which made me give some thought about the subject.

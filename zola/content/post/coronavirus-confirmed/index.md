@@ -1,6 +1,7 @@
 ---
 title: Visualizing the number of COVID-19 confirmed cases with Plotly
 date: 2020-03-21
+description: "Interactive Plotly visualizations of the evolution of confirmed COVID-19 cases per country."
 ---
 
 

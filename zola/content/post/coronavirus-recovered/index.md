@@ -1,6 +1,7 @@
 ---
 title: Visualizing the number of COVID-19 recovered cases with Plotly
 date: 2020-03-21
+description: "Interactive Plotly visualizations of the evolution of recovered COVID-19 patients per country."
 ---
 
 I would like to see: **The evolution over time of the number of cases/deaths/recovery patients per country**. Assuming that others are also interested in this information, I am sharing the plots I made with `plotly`.

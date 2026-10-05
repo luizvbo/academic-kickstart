@@ -8,27 +8,41 @@ quick_navigation_buttons = true
 toc = true
 +++
 
-I am a Data Scientist working for [ING WBAA](https://ing.com) (Wholesale Bank Advanced Analytics) in Amsterdam, Netherlands — a Brazilian solving problems using data.
+I am a Senior Data Engineer working for [ING WBAA](https://ing.com) (Wholesale Bank Advanced Analytics) in Amsterdam, Netherlands — a Brazilian solving problems using data.
 
 <p class="pills-label"><strong>Interests</strong></p>
 <div class="pills">
 <span>Natural Language Processing</span><span>Machine Learning</span><span>Evolutionary Computation</span>
 </div>
 
-You can reach me at [luiz.vbo@gmail.com](mailto:luiz.vbo@gmail.com), or find me on [GitHub](https://github.com/luizvbo), [Google Scholar](https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ) and [Twitter](https://twitter.com/luizvbo).
+You can reach me at [luiz.vbo@gmail.com](mailto:luiz.vbo@gmail.com), or find me on [GitHub](https://github.com/luizvbo), [LinkedIn](https://www.linkedin.com/in/luizvbo) and [Google Scholar](https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ).
 
 ## Experience
 
 <div class="exp">
 
-<p class="exp-head"><span class="exp-role">Data Scientist</span>
-<span class="exp-org"><a href="https://ing.com">ING WBAA</a> — Amsterdam, Netherlands</span>
-<span class="exp-period">Feb 2019 — present</span></p>
+<p class="exp-head"><span class="exp-role">Senior Data Engineer</span>
+<span class="exp-org"><a href="https://ing.com">ING WBAA</a> — Amsterdam Area, Netherlands · Hybrid</span>
+<span class="exp-period">Apr 2023 — present</span></p>
 
-- Name matching project: fuzzy matching millions of names using multiple stages (cosine similarity + MLP on (py)Spark)
-- Name screening: reducing false positives from name screening using Levenshtein distance, cosine similarity and Jaro-Winkler for feature extraction with LightGBM
-- Anomaly detection (one-class SVM, isolation forest), address parsing (libpostal), database statistics monitor
-- Snorkel labelling: predicting label dependencies using robust PCA
+- **Technical leadership:** technical lead for the team's data engineering work — architecture decisions, code quality, production ownership and incident resolution, migration planning and cross-team knowledge sharing
+- **Data products & regulatory delivery:** designed and operated business-critical KYC/CDD and regulatory data products (SEPA, SWIFT, accountability); built and optimized ETL pipelines with PySpark and Airflow; kept pipelines healthy through recurring framework upgrades (Airflow v2→v3, PySpark v4)
+- **Cloud migration & platform engineering:** led the data-pipeline workstream of the migration from on-premise (DAP) to ING's Vista/GCP platform — architecture, cloud-native storage (BigQuery, GCS), orchestration (Cloud Composer) and security patterns; contributed to IaC adoption with Terraform; evaluated migration-ready design via a Kedro + Ibis PoC that shaped tooling decisions
+- **Community & speaking:** speaker at TechFest/DECONF ("Kedro + Ibis: Is This the End of Painful Data Pipeline Migrations?"), member of the DECONF organizing team; contributed to hiring via technical interviews and interviewer onboarding
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Senior Data Scientist</span>
+<span class="exp-org"><a href="https://ing.com">ING WBAA</a> — The Randstad, Netherlands</span>
+<span class="exp-period">Feb 2019 — Apr 2023</span></p>
+
+- **Hunter (AML investigation platform):** ML features and analytics for ING's anti-money-laundering investigation platform — entity resolution, country extraction and scalable fuzzy matching in Spark over millions of names, reducing false positives; led weak-supervision research (WeaSUL: Snorkel-based data programming) enabling label creation in low-ground-truth environments
+- **CodeFix (AI-assisted software security):** sole data scientist in the early phase — shaped the product's technical direction, defined the DS roadmap and established academic collaborations; built PoCs on Fortify scan data and applied NLP (word2vec, BERT-based) to source-code comprehension and vulnerability-detection false-positive reduction
+- **Holmes document search:** led deployment of a production-grade named entity recognition model powering ING's document search
+- **Model deployment & MLOps:** productionized ML models as scalable services with Docker and FastAPI; built deployment pipelines on Kedro and Airflow; helped establish machine learning engineering practices in ING Analytics; co-presented ING's MLOps strategy at the MLE Guild and delivered workshops on MLflow, Docker and production ML
+- **Research supervision & mentoring:** co-supervised MSc research on weak supervision and active learning for financial-crime analytics; mentored junior data scientists and trainees across WBAA
 
 </div>
 

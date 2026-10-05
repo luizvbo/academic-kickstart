@@ -78,7 +78,7 @@ menu = [
 ]
 
 # RSS icon in the footer
-feed_icon = true
+feed_icon = false
 
 # Show the full post content in the Atom feed
 full_content_in_feed = false
@@ -92,7 +92,7 @@ encode_plaintext_email = true
 socials = [
     { name = "github", url = "https://github.com/luizvbo", icon = "github" },
     { name = "google-scholar", url = "https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ", icon = "google-scholar" },
-    { name = "twitter", url = "https://twitter.com/luizvbo", icon = "twitter" },
+    { name = "linkedin", url = "https://www.linkedin.com/in/luizvbo", icon = "linkedin" },
 ]
 
 footer_menu = [

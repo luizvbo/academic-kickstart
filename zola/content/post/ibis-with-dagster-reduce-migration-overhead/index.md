@@ -1,14 +1,15 @@
----
-title: "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
-date: 2026-10-05
-description: "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
-extra:
-    mermaid: true
----
++++
+title = "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
+date = 2026-10-05
+description = "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
+
+[extra]
+mermaid = true
++++
 
 # Portable data pipelines with Dagster + Ibis: making migrations less painfull
 
-<!-- IMAGE: hero/cover image — something evoking "one codebase, many engines" (e.g., a fan-out diagram: Python code → duckdb / polars / spark / bigquery logos) -->
+<!-- IMAGE: hero/cover image: something evoking "one codebase, many engines" (e.g., a fan-out diagram: Python code → duckdb / polars / spark / bigquery logos) -->
 
 There are a lot of companies moving from in-house hosting to cloud providers.
 And with that comes migrations...
@@ -58,15 +59,15 @@ A deliberately ordinary bronze → silver → gold pipeline:
 
 {% <mermaid> %}
 flowchart TD
-    subgraph sources["external sources — csv locally, parquet/tables in production"]
+    subgraph sources["external sources: csv locally, parquet/tables in production"]
         events_csv
         products_csv
     end
-    subgraph bronze["bronze — land sources into managed tables"]
+    subgraph bronze["bronze: land sources into managed tables"]
         raw_events
         raw_products
     end
-    subgraph silver["silver — normalize types, trim/lower, dedupe, validate"]
+    subgraph silver["silver: normalize types, trim/lower, dedupe, validate"]
         cleaned_events
     end
     subgraph gold
@@ -96,10 +97,10 @@ DAGSTER_DEPLOYMENT_NAME=prod   uv run dagster dev   # pyspark + parquet "lake" s
 ```
 
 (The repo wraps these as `just dev <local|polars|prod>`; `dev prod` first
-seeds a local parquet lake under `data/lake/` from the CSVs — `just
-seed-lake` — and prod also needs the `pyspark` extra plus a JDK.)
+seeds a local parquet lake under `data/lake/` from the CSVs (`just
+seed-lake`), and prod also needs the `pyspark` extra plus a JDK.)
 
-Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME` — Dagster+ sets it automatically; on a self-hosted OSS deployment it's just another env var on your code location).
+Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME`; Dagster+ sets it automatically, and on a self-hosted OSS deployment it's just another env var on your code location).
 
 ## The three pieces
 
@@ -175,7 +176,7 @@ This is the part that sells it. The same `daily_active_users(clean_events(raw_ev
 
 `DATE_TRUNC` vs `TIMESTAMP_TRUNC`, double quotes vs backticks, `TRIM(x)` vs `TRIM(' ' FROM x)`: all the dialect trivia you never want to hand-maintain, generated from one expression.
 
-<!-- IMAGE: optional — screenshot of a materialization's metadata tab showing the compiled SQL recorded on the run -->
+<!-- IMAGE (optional): screenshot of a materialization's metadata tab showing the compiled SQL recorded on the run -->
 
 This isn't just a demo trick. `ibis.<backend>.compile()` works without connecting, so a `pytest` file that compiles every transform against every target dialect is a **CI guardrail**. If someone adds an operation your production engine can't express, it fails before deployment, not after. The repo wires this in concretely: a `prek` pre-push hook runs lint (ruff), type-checking (ty), and that test suite on every push.
 
@@ -193,7 +194,7 @@ events.mutate(rn=ibis.row_number().over(
 Ibis's Polars backend has _no_ window-function translation (Polars natively has `.over()`, but Ibis doesn't map to it yet). When we materialize the graph on Polars we get:
 
 ```
-latest_event_per_user — FAILED:
+latest_event_per_user FAILED:
 ibis.common.exceptions.OperationNotDefinedError:
     No translation rule for WindowFunction
 ```
@@ -247,4 +248,4 @@ If your transforms are pure SQL and your targets are SQL warehouses, dbt is simp
 - **The boundary is visible and fails safely**: unsupported ops raise `OperationNotDefinedError` at translate time, and the repo shows three ways to handle it.
 - **The real pitch isn't "write once, run anywhere"**, it's "port once, never rewrite again," plus knowing exactly where "anywhere" ends.
 
-<!-- IMAGE: closing diagram — same pipeline illustration as hero, annotated with "logic: write once" / "engine: config" / "storage: config" labels -->
+<!-- IMAGE: closing diagram: same pipeline illustration as hero, annotated with "logic: write once" / "engine: config" / "storage: config" labels -->

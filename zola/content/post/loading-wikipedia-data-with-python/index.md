@@ -1,8 +1,8 @@
----
-title: Loading Wikipedia articles (EN) with Python
-date: 2020-03-04
-description: "Loading and processing Wikipedia article dumps with Python."
----
++++
+title = "Loading Wikipedia articles (EN) with Python"
+date = 2020-03-04
+description = "Loading and processing Wikipedia article dumps with Python."
++++
 
 Wikipedia is the largest and most popular general reference work on the World Wide Web, and is one of the most popular websites ranked by Alexa as of January 2020.
 

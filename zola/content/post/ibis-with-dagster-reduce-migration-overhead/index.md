@@ -9,7 +9,7 @@ mermaid = true
 
 # Portable data pipelines with Dagster + Ibis: making migrations less painful
 
-{% <mermaid full_width={true}> %}
+{% <mermaid> %}
 flowchart LR
     code["same pipeline code<br/>assets + ibis expressions<br/>(written once)"]
     code -->|"deployment config<br/>swaps engine + storage"| dep
@@ -67,21 +67,21 @@ A deliberately ordinary bronze → silver → gold pipeline:
 
 {% <mermaid full_width={true}> %}
 flowchart LR
-    subgraph sources["external sources: csv locally, parquet/tables in production"]
+    subgraph sources["External sources:<br>- CSV locally<br>- Parquet/tables in production"]
         events_csv
         products_csv
     end
-    subgraph bronze["bronze: land sources into managed tables"]
+    subgraph bronze["Bronze:<br>- Land sources into managed tables"]
         raw_events
         raw_products
     end
-    subgraph silver["silver: normalize types, trim/lower, dedupe, validate"]
+    subgraph silver["Silver:<br>- Normalize types<br>- Trim/lower strings<br>- Dedupe<br>- Validate"]
         cleaned_events
     end
     subgraph gold
         daily_active_users
         category_revenue
-        latest_event_per_user["latest_event_per_user *"]
+        latest_event_per_user["latest_event_per_user*"]
     end
     events_csv --> raw_events
     products_csv --> raw_products
@@ -92,7 +92,7 @@ flowchart LR
     cleaned_events --> latest_event_per_user
 {% </mermaid> %}
 
-\* we'll come back to that asterisk. It's the most interesting part.
+\* we'll come back to that asterisk (`latest_event_per_user`). It's the most interesting part.
 
 <!-- IMAGE: screenshot of the Dagster asset graph (lineage view) showing the external source nodes → bronze → silver → gold, with the three asset groups colored -->
 

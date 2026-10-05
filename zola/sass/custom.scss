@@ -1,0 +1,132 @@
+// Custom styles for the homepage "resume" layout, inspired by the old
+// Hugo/Wowchemy widgets. Scoped under main.home so other pages are untouched.
+
+// --- Hero banner -----------------------------------------------------------
+main.home #banner-container-home {
+    margin-block: 1.5rem 2.2rem;
+    align-items: center;
+
+    #image-container-home {
+        max-width: 12.5rem;
+    }
+
+    #banner-home-img {
+        border-radius: 50%;
+        border: 4px solid var(--bg-1);
+    }
+
+    #home-banner-subtitle {
+        font-size: 1.15rem;
+        font-weight: 320;
+    }
+}
+
+// --- Section headings: accent bar, like Wowchemy's widget titles -----------
+main.home > section > h2 {
+    margin-block: 2.2rem 1.1rem;
+    padding-inline-start: 0.7rem;
+    border-inline-start: 3px solid var(--primary-color);
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+// --- Interest pills ---------------------------------------------------------
+.pills-label {
+    margin-block-end: 0.4rem;
+}
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-end: 1.2rem;
+
+    span {
+        padding: 0.2rem 0.8rem;
+        border-radius: 999px;
+        background-color: var(--bg-1);
+        color: var(--primary-color);
+        font-size: 0.85rem;
+        font-weight: 550;
+    }
+}
+
+// --- Experience timeline -----------------------------------------------------
+.exp {
+    position: relative;
+    margin-block-end: 1.8rem;
+    padding-inline-start: 1.1rem;
+    border-inline-start: 2px solid var(--primary-color);
+
+    // timeline dot
+    &::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: -0.4rem;
+        top: 0.5rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+    }
+}
+
+.exp-head {
+    margin-block-end: 0.25rem;
+}
+
+.exp-role {
+    display: block;
+    font-weight: 650;
+    font-size: 1.08rem;
+}
+
+.exp-org {
+    font-size: 0.95rem;
+}
+
+.exp-period {
+    display: block;
+    color: var(--meta-color);
+    font-size: 0.85rem;
+}
+
+.exp ul {
+    margin-block-start: 0.4rem;
+}
+
+.exp p {
+    margin-block-end: 0.5rem;
+}
+
+// --- Accomplishment cards -----------------------------------------------------
+.awards ul {
+    list-style: none;
+    padding-inline-start: 0;
+}
+
+.awards li {
+    margin-block-end: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--divider-color);
+    border-radius: 8px;
+    background-color: var(--bg-2);
+}
+
+// --- "See all" button ----------------------------------------------------------
+a.btn-more {
+    display: inline-block;
+    margin-block-start: 0.4rem;
+    padding: 0.4rem 1.1rem;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 550;
+    text-decoration: none;
+
+    &:hover {
+        background-color: var(--primary-color);
+        color: var(--hover-color);
+        text-decoration: none;
+    }
+}

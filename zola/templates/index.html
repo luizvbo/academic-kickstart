@@ -32,7 +32,7 @@
     {%- endif -%}
 {%- endfor -%}
 
-<main {% if more_than_one_section_shown %}class="{{ first_section }}-first"{% endif %}>
+<main class="home{% if more_than_one_section_shown %} {{ first_section }}-first{% endif %}">
 {%- if config.extra.hcard %}
     {%- include "partials/hcard.html" -%}
 {% endif -%}
@@ -112,7 +112,7 @@
         {%- endif -%}
         {%- endfor -%}
     </ul>
-    <p><a href="{{ get_url(path="publication", trailing_slash=true) }}">See all publications</a></p>
+    <p><a class="btn-more" href="{{ get_url(path="publication", trailing_slash=true) }}">See all publications</a></p>
 </section>
 {%- endif -%}
 

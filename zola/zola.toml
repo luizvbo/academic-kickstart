@@ -64,6 +64,9 @@ show_previous_next_article_links = true
 # Emoji favicon
 favicon_emoji = "📊"
 
+# Custom stylesheet (compiled from sass/custom.scss) — homepage resume styling
+stylesheets = ["custom.css"]
+
 menu = [
     { name = "posts", url = "post", trailing_slash = true },
     { name = "experience", url = "/#experience", trailing_slash = false },

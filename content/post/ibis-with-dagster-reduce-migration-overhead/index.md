@@ -59,7 +59,7 @@ diffs.** Not "migrate to BigQuery for free this time" (the port to
 Ibis is real work), but "this is the last engine migration that ever requires a
 rewrite."
 
-Repo: <!-- TODO: link to the repo -->
+**Repo**: [github.com/luizvbo/ibis-dagster-example](https://github.com/luizvbo/ibis-dagster-example)
 
 ## The demo
 
@@ -94,7 +94,7 @@ flowchart LR
 
 \* we'll come back to that asterisk (`latest_event_per_user`). It's the most interesting part.
 
-<!-- IMAGE: screenshot of the Dagster asset graph (lineage view) showing the external source nodes → bronze → silver → gold, with the three asset groups colored -->
+![](img/global-asset-lineage.svg)
 
 The entire engine/env selection is two environment variables:
 

@@ -17,18 +17,23 @@
     {%- set more_than_one_section_shown = true -%}
 {%- endif -%}
 
-{#- The section content is split on "<!-- break -->" markers so the homepage
-    follows the old Hugo widget order:
-      part 0 (bio, education) -> posts -> part 1 (experience, awards)
-      -> recent publications -> part 2 (contact) -#}
-{%- set content_parts = section.content | split(pat="<!-- break -->") -%}
+{#- The section content is split on named markers so the homepage order is
+    controlled from _index.md:
+      content -> "<!-- posts -->" -> content -> "<!-- publications -->" -> content -#}
+{%- set parts = section.content | split(pat="<!-- posts -->") -%}
 {%- set before_posts = "" -%}
+{%- set rest = "" -%}
+{%- for part in parts -%}
+    {%- if loop.index == 1 -%}{%- set_global before_posts = part -%}
+    {%- elif loop.index == 2 -%}{%- set_global rest = part -%}
+    {%- endif -%}
+{%- endfor -%}
+{%- set rparts = rest | split(pat="<!-- publications -->") -%}
 {%- set between_lists = "" -%}
 {%- set after_pubs = "" -%}
-{%- for part in content_parts -%}
-    {%- if loop.index == 1 -%}{%- set_global before_posts = part -%}
-    {%- elif loop.index == 2 -%}{%- set_global between_lists = part -%}
-    {%- elif loop.index == 3 -%}{%- set_global after_pubs = part -%}
+{%- for part in rparts -%}
+    {%- if loop.index == 1 -%}{%- set_global between_lists = part -%}
+    {%- elif loop.index == 2 -%}{%- set_global after_pubs = part -%}
     {%- endif -%}
 {%- endfor -%}
 
@@ -59,6 +64,12 @@
 </section>
 {%- endif -%}
 
+{%- if between_lists -%}
+<section>
+    {{ between_lists | safe }}
+</section>
+{%- endif -%}
+
 {% if section?.extra?.section_path -%}
     {% set extra_section = get_section(path=section?.extra?.section_path) %}
 {% endif -%}
@@ -74,12 +85,6 @@
 {%- else -%}
     {%- include "partials/main_page_posts_list.html" -%}
     {%- include "partials/main_page_projects_list.html" -%}
-{%- endif -%}
-
-{%- if between_lists -%}
-<section>
-    {{ between_lists | safe }}
-</section>
 {%- endif -%}
 
 {#- Recent publications, loaded straight from the BibTeX file -#}

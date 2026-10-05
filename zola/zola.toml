@@ -73,8 +73,6 @@ menu = [
     { name = "accomplishments", url = "/#accomplishments", trailing_slash = false },
     { name = "publications", url = "publication", trailing_slash = true },
     { name = "contact", url = "/#contact", trailing_slash = false },
-    { name = "archive", url = "archive", trailing_slash = true },
-    { name = "about", url = "about", trailing_slash = true },
 ]
 
 # RSS icon in the footer
@@ -97,6 +95,7 @@ socials = [
 
 footer_menu = [
     { url = "about", name = "about", trailing_slash = true },
+    { url = "archive", name = "archive", trailing_slash = true },
     { url = "sitemap.xml", name = "sitemap", trailing_slash = false },
 ]
 

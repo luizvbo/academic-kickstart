@@ -8,20 +8,12 @@ section_path = "post/_index.md"
 max_posts = 5
 +++
 
-I am a Senior Data Engineer working for [ING WBAA](https://ing.com) (Wholesale Bank Advanced Analytics) in Amsterdam, Netherlands — a Brazilian solving problems using data.
+I am a Senior Data Engineer working for [ING WBAA](https://ing.com) (Wholesale Bank Advanced Analytics) in Amsterdam, Netherlands — a Brazilian solving problems using data. In my free time I'm learning Rust and building web applications with [axum](https://github.com/tokio-rs/axum).
 
 <p class="pills-label"><strong>Interests</strong></p>
 <div class="pills">
-<span>Natural Language Processing</span><span>Machine Learning</span><span>Evolutionary Computation</span>
+<span>Data Engineering</span><span>Machine Learning</span><span>Natural Language Processing</span><span>Evolutionary Computation</span><span>Rust</span>
 </div>
-
-## Education
-
-- **PhD in Computer Science** — Federal University of Minas Gerais, 2016
-- **MSc in Computer Science** — Universidade Federal do Rio Grande do Sul, 2012
-- **BSc in Computer Science** — Universidade Federal de Itajubá, 2010
-
-<!-- break -->
 
 ## Experience
 
@@ -119,6 +111,12 @@ This included managing a research team of three researchers, and development in 
 
 </div>
 
+## Education
+
+- **PhD in Computer Science** — Federal University of Minas Gerais, 2016
+- **MSc in Computer Science** — Universidade Federal do Rio Grande do Sul, 2012
+- **BSc in Computer Science** — Universidade Federal de Itajubá, 2010
+
 ## Accomplishments
 
 <div class="awards">
@@ -130,10 +128,16 @@ This included managing a research team of three researchers, and development in 
 
 </div>
 
-<!-- break -->
+<!-- posts -->
+
+<!-- publications -->
 
 ## Contact
 
-You can reach me at [luiz.vbo@gmail.com](mailto:luiz.vbo@gmail.com), or find me on [GitHub](https://github.com/luizvbo), [LinkedIn](https://www.linkedin.com/in/luizvbo) and [Google Scholar](https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ).
+You can find me on [GitHub](https://github.com/luizvbo), [LinkedIn](https://www.linkedin.com/in/luizvbo) and [Google Scholar](https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ), or drop me an email:
+
+<details class="email-reveal"><summary>Show email address</summary>
+<p><a href="mailto:&#108;&#117;&#105;&#122;&#46;&#118;&#98;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#117;&#105;&#122;&#46;&#118;&#98;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+</details>
 
 **Office:** Frankemaheerd 2, Amsterdam, 1102AN — ING Cedar, B Tower

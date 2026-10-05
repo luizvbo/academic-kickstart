@@ -21,13 +21,48 @@ main.home #banner-container-home {
     }
 }
 
-// --- Section headings: accent bar, like Wowchemy's widget titles -----------
+// --- Section headings -------------------------------------------------------
 main.home > section > h2 {
-    margin-block: 2.2rem 1.1rem;
-    padding-inline-start: 0.7rem;
-    border-inline-start: 3px solid var(--primary-color);
+    margin-block: 2.4rem 1.1rem;
+    padding-block-end: 0.4rem;
+    border-bottom: 2px solid var(--divider-color);
     font-weight: 650;
     line-height: 1.3;
+}
+
+// Keep anchor targets clear of the fixed header when navigating via the menu
+[id] {
+    scroll-margin-top: 5rem;
+}
+
+// --- Click-to-reveal email ----------------------------------------------------
+details.email-reveal {
+    margin-block: 0.4rem 1rem;
+
+    summary {
+        display: inline-block;
+        padding: 0.35rem 0.95rem;
+        border: 1.5px solid var(--primary-color);
+        border-radius: 999px;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        font-weight: 550;
+        list-style: none;
+        cursor: pointer;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary:hover {
+        background-color: var(--primary-color);
+        color: var(--hover-color);
+    }
+
+    p {
+        margin-block: 0.6rem 0;
+    }
 }
 
 // --- Interest pills ---------------------------------------------------------

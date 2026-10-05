@@ -2,7 +2,7 @@ name: Deploy site to GitHub Pages
 
 on:
   push:
-    branches: [zola-migration, main]
+    branches: [zola-migration, master]
   workflow_dispatch:
 
 permissions:
@@ -30,6 +30,7 @@ jobs:
           path: ./public
   deploy:
     needs: build
+    if: github.ref_name == 'master' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

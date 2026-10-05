@@ -1,21 +1,29 @@
 +++
-title = "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
+title = "Portable data pipelines with Dagster + Ibis: making migrations less painful"
 date = 2026-10-05
-description = "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
+description = "One Ibis expression, many engines. A small Dagster repo showing how engine migrations can become a config change instead of a rewrite."
 
 [extra]
 mermaid = true
 +++
 
-# Portable data pipelines with Dagster + Ibis: making migrations less painfull
+# Portable data pipelines with Dagster + Ibis: making migrations less painful
 
-<!-- IMAGE: hero/cover image: something evoking "one codebase, many engines" (e.g., a fan-out diagram: Python code → duckdb / polars / spark / bigquery logos) -->
+{% <mermaid> %}
+flowchart LR
+    code["same pipeline code<br/>assets + ibis expressions<br/>(written once)"]
+    code -->|"deployment config<br/>swaps engine + storage"| dep
+    subgraph dep["pick a backend"]
+        direction TB
+        a["duckdb<br/>local csv files"] ~~~ b["polars<br/>same csv files"] ~~~ c["pyspark<br/>parquet lake"] ~~~ d["bigquery, trino, ...<br/>one more config entry"]
+    end
+{% </mermaid> %}
 
 There are a lot of companies moving from in-house hosting to cloud providers.
 And with that comes migrations...
 
 For data pipelines, particularly, there's a question of whether the pipeline
-should be also migrated to use the data warehouse solution provided by the
+should also be migrated to use the data warehouse solution provided by the
 cloud provider. For instance, since our team is migrating to GCP, we had a
 discussion on whether we should migrate our pipelines running on PySpark to
 BigQuery or not. We considered multiple dimensions, like cost, effort, and
@@ -28,7 +36,7 @@ There is a lot of discussion in the European Union about moving away from US
 Companies (see [this article from
 Reuters](https://www.reuters.com/business/eu-targets-big-tech-dependence-with-made-in-europe-drive-2026-06-03/)
 for instance). There is no guarantee that our migration to GCP will be the
-last, and with that, no guarantee that we will have to rewrite our code again.
+last, and with that, no guarantee that we won't have to rewrite it all again.
 
 That forced a question: _is there a way to write data transformations so that
 switching the execution engine is a configuration change, not a rewrite?_
@@ -39,11 +47,11 @@ solution to minimize the migration effort. It is a dataframe-style expression
 API that compiles the same code to DuckDB SQL, Spark SQL, BigQuery SQL, Polars,
 and many other backends, totaling 20+ backends.
 
-Ibis, minimizes the migration effort, but it's just a "translation layer". We
+Ibis minimizes the migration effort, but it's just a "translation layer". We
 needed structure and orchestration, which can be provided by a single tool,
 instead of using Airflow with an internal framework for structure.
 **[Dagster](https://dagster.io)** can solve that with many features provided
-out-of-the-box. It is an orchestration with software-defined assets, giving us
+out-of-the-box. It is an orchestrator built around software-defined assets, giving us
 the structure dbt users are used to: models, lineage, tests, schedules.
 
 The thesis: **port your logic to Ibis once, and engine migrations become config
@@ -98,7 +106,9 @@ DAGSTER_DEPLOYMENT_NAME=prod   uv run dagster dev   # pyspark + parquet "lake" s
 
 (The repo wraps these as `just dev <local|polars|prod>`; `dev prod` first
 seeds a local parquet lake under `data/lake/` from the CSVs (`just
-seed-lake`), and prod also needs the `pyspark` extra plus a JDK.)
+seed-lake`), and prod also needs the `pyspark` extra plus a JDK. Note that
+ibis currently pins `pyspark<4.1`, which doesn't run on Java 25; a future
+ibis release should allow Spark 4.2, the version that adds Java 25 support.)
 
 Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME`; Dagster+ sets it automatically, and on a self-hosted OSS deployment it's just another env var on your code location).
 
@@ -159,7 +169,7 @@ def cleaned_events_no_null_user_ids(ibis: IbisResource) -> dg.AssetCheckResult:
 
 We implemented the usual dbt generic tests `not_null`, `unique`, `accepted_values`, `relationships` (an anti-join), plus a couple of custom checks. Marking the not-null check `blocking=True` reproduces `dbt build` semantics: if it fails, downstream assets don't materialize.
 
-And since Dagster is an orchestrator we can set a `daily_schedule` running the whole job at 06:00
+And since Dagster is an orchestrator, scheduling is native too: the repo ships a `daily_schedule` (`0 6 * * *`) covering the whole job, stopped by default so it can be toggled on from the UI.
 
 ## The "aha": one expression, three dialects
 
@@ -248,4 +258,9 @@ If your transforms are pure SQL and your targets are SQL warehouses, dbt is simp
 - **The boundary is visible and fails safely**: unsupported ops raise `OperationNotDefinedError` at translate time, and the repo shows three ways to handle it.
 - **The real pitch isn't "write once, run anywhere"**, it's "port once, never rewrite again," plus knowing exactly where "anywhere" ends.
 
-<!-- IMAGE: closing diagram: same pipeline illustration as hero, annotated with "logic: write once" / "engine: config" / "storage: config" labels -->
+{% <mermaid> %}
+flowchart LR
+    code["pipeline code<br/>(write once)"]
+    code -->|"engine: config"| eng["duckdb | polars | pyspark | ..."]
+    code -->|"storage: config"| st["csv | parquet | warehouse tables"]
+{% </mermaid> %}

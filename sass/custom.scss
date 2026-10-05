@@ -45,6 +45,31 @@ header {
     scroll-margin-top: 5rem;
 }
 
+// --- Image lightbox (native <dialog>, see static/js/lightbox.js) --------------
+article img:not(.u-photo):not(.no-lightbox) {
+    cursor: zoom-in;
+}
+
+dialog.lightbox {
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: 95vw;
+    max-height: 95vh;
+
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.85);
+    }
+
+    img {
+        display: block;
+        max-width: 95vw;
+        max-height: 90vh;
+        object-fit: contain;
+        cursor: zoom-out;
+    }
+}
+
 // --- Click-to-reveal email ----------------------------------------------------
 details.email-reveal {
     margin-block: 0.4rem 1rem;

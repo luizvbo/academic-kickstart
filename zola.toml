@@ -61,8 +61,8 @@ show_reading_time = true
 # Show prev/next navigation at the bottom of posts
 show_previous_next_article_links = true
 
-# Emoji favicon
-favicon_emoji = "📊"
+# Favicon: PNG fallback (SVG + apple-touch-icon are linked in templates/tabi/extend_head.html)
+favicon = "favicon.png"
 
 # Custom stylesheet (compiled from sass/custom.scss) — homepage resume styling
 stylesheets = ["custom.css"]

@@ -1,6 +1,0 @@
-[submodule "themes/academic"]
-	path = themes/academic
-	url = https://github.com/gcushen/hugo-academic.git
-[submodule "zola/themes/tabi"]
-	path = zola/themes/tabi
-	url = https://github.com/welpo/tabi.git

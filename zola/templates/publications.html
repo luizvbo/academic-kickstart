@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<main>
+    {{< page_header title={section.title} />}}
+
+    {%- if section.content -%}
+    <section>
+        {{ section.content | safe }}
+    </section>
+    {%- endif -%}
+
+    {%- set data = load_data(path="content/publication/publications.bib", format="bibtex") -%}
+    {%- set raw_entries = [] -%}
+    {%- for e in data.bibliographies -%}
+        {%- if e.tags -%}{%- set_global raw_entries = [...raw_entries, e] -%}{%- endif -%}
+    {%- endfor -%}
+    {%- set entries = raw_entries | sort(attribute="tags.year") | reverse -%}
+    {%- set type_labels = {
+        "article": "Journal article",
+        "inproceedings": "Conference paper",
+        "conference": "Conference paper",
+        "incollection": "Book chapter",
+        "book": "Book",
+        "phdthesis": "PhD thesis",
+        "mastersthesis": "MSc thesis",
+        "techreport": "Technical report"
+    } -%}
+
+    <div class="bloglist-container">
+        {%- set prev_year = "" -%}
+        {%- for e in entries -%}
+            {%- if e.tags.title and e.tags.year and e.tags.year != prev_year -%}
+                {%- set_global prev_year = e.tags.year -%}
+                <h2 class="listing-title">{{ e.tags.year }}</h2>
+            {%- endif -%}
+            <section class="bloglist-content bottom-divider">
+                <h3 class="bloglist-title">{{< bibtex_clean s={e.tags.title} />}}</h3>
+                <div class="description">
+                    <p>
+                        {{< author_list s={e.tags.author} />}}
+                        {%- set venue = e.tags.booktitle | default(value=e.tags.journal) | default(value=e.tags.school) | default(value=e.tags.series) | default(value="") -%}
+                        {%- if venue %}<br><em>{{< bibtex_clean s={venue} />}}</em>{%- endif -%}
+                        {%- if e.tags.pages %}, pp. {{< bibtex_clean s={e.tags.pages} />}}{%- endif -%}
+                        {%- set type_label = type_labels[e.entry_type | lower] | default(value="") -%}
+                        {%- if type_label %} · {{ type_label }}{%- endif -%}
+                    </p>
+                    <p>
+                        {%- if e.tags.url %}<a href="{{ e.tags.url }}">URL</a> · {% endif -%}
+                        {%- if e.tags.doi -%}
+                            {%- if e.tags.doi is starting_with(pat="http") -%}
+                                <a href="{{ e.tags.doi }}">DOI</a> ·
+                            {%- else -%}
+                                <a href="https://doi.org/{{ e.tags.doi }}">DOI</a> ·
+                            {%- endif -%}
+                        {%- endif -%}
+                        <a href="publications.bib#{{ e.citation_key }}">BibTeX</a>
+                    </p>
+                    {%- if e.tags.abstract -%}
+                    <details>
+                        <summary>Abstract</summary>
+                        <p>{{< bibtex_clean s={e.tags.abstract} />}}</p>
+                    </details>
+                    {%- endif -%}
+                </div>
+            </section>
+        {%- endfor -%}
+    </div>
+</main>
+{% endblock main_content %}

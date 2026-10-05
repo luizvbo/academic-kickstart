@@ -209,16 +209,16 @@ for type_, df in df_dict.items():
 
 ## Number of confirmed cases over time
 
-![]("2020-03-13-corona-new-cases.png")
+![Number of confirmed cases over time](2020-03-13-corona-new-cases.png)
 
 ---
 
 ## Number of death cases over time
 
-![](src="2020-03-13-corona-deaths.png")
+![Number of death cases over time](2020-03-13-corona-deaths.png)
 
 ---
 
 ## Number of recovered cases over time
 
-![](src="2020-03-13-corona-recovered.png")
+![Number of recovered cases over time](2020-03-13-corona-recovered.png)

@@ -2,6 +2,8 @@
 title: "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
 date: 2026-10-05
 description: "Portable data pipelines with Dagster + Ibis: making migrations less painfull"
+extra:
+    mermaid: true
 ---
 
 # Portable data pipelines with Dagster + Ibis: making migrations less painfull
@@ -54,7 +56,7 @@ Repo: <!-- TODO: link to the repo -->
 
 A deliberately ordinary bronze → silver → gold pipeline:
 
-```mermaid
+{% <mermaid> %}
 flowchart TD
     subgraph sources["external sources — csv locally, parquet/tables in production"]
         events_csv
@@ -79,7 +81,7 @@ flowchart TD
     cleaned_events --> category_revenue
     raw_products --> category_revenue
     cleaned_events --> latest_event_per_user
-```
+{% </mermaid> %}
 
 \* we'll come back to that asterisk. It's the most interesting part.
 

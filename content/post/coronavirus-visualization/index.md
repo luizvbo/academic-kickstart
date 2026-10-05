@@ -1,7 +1,8 @@
----
-title: Visualizing COVID-19 infection (corona virus) over time
-date: 2020-03-12
----
++++
+title = "Visualizing COVID-19 infection (corona virus) over time"
+date = 2020-03-12
+description = "Exploring and visualizing COVID-19 infection data over time with Python."
++++
 
 # Exploring COVID-19
 
@@ -19,7 +20,6 @@ I am using Pandas + cufflinks to plot our data using Plotly.
 
 I am also using ipywidgets to interact with the plots. If you are using Jupyterlab, you may need to refer to the [installation documention](https://ipywidgets.readthedocs.io/en/latest/user_install.html#installing-the-jupyterlab-extension).
 
-
 ```python
 import pandas as pd
 from IPython.display import Markdown, display
@@ -30,7 +30,6 @@ from ipywidgets.widgets import (
 from datetime import datetime
 import cufflinks as cf
 ```
-
 
 <script type="text/javascript">
 window.PlotlyConfig = {MathJaxConfig: 'local'};
@@ -48,10 +47,7 @@ require(['plotly'], function(Plotly) {
 }
 </script>
 
-
-
 ## Getting the data
-
 
 ```python
 path_dict = dict(
@@ -63,7 +59,6 @@ path_dict = dict(
                  "csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv")
 )
 ```
-
 
 ```python
 def set_index(df):
@@ -86,7 +81,6 @@ df_dict = {
 ```
 
 ## Making interative plots
-
 
 ```python
 def interactive_plot(df_input,
@@ -205,7 +199,6 @@ Three dropdown menus allow you to select three different countries to compare.
 
 Run your notebook and see the results :D
 
-
 ```python
 # Finally, we plot all the cases
 for type_, df in df_dict.items():
@@ -217,16 +210,16 @@ for type_, df in df_dict.items():
 
 ## Number of confirmed cases over time
 
-{{< figure src="2020-03-13-corona-new-cases.png" >}}
+![Number of confirmed cases over time](2020-03-13-corona-new-cases.png)
 
 ---
 
 ## Number of death cases over time
 
-{{< figure src="2020-03-13-corona-deaths.png" >}}
+![Number of death cases over time](2020-03-13-corona-deaths.png)
 
 ---
 
 ## Number of recovered cases over time
 
-{{< figure src="2020-03-13-corona-recovered.png" >}}
+![Number of recovered cases over time](2020-03-13-corona-recovered.png)

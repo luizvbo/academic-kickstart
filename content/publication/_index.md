@@ -1,15 +1,6 @@
----
-title: Publications
++++
+title = "Publications"
+template = "publications.html"
++++
 
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-#   4 = Citation
-view: 4
-
-# Optional header image (relative to `static/media/` folder).
-header:
-  caption: ""
-  image: ""
----
+The list below is generated from [`publications.bib`](publications.bib). To add or update publications, edit that file.

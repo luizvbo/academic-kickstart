@@ -1,0 +1,29 @@
+{#- "Last, First and Last2, First2" -> "First Last, First2 Last2", cleaning LaTeX escapes -#}
+{% component author_list(s: string) %}
+{%- set names = [] -%}
+{%- for n in s | split(pat=" and ") -%}
+    {%- set name = n | trim
+        | replace(from="{", to="") | replace(from="}", to="")
+        | replace(from="\\'a", to="á") | replace(from="\\'e", to="é")
+        | replace(from="\\'i", to="í") | replace(from="\\'o", to="ó") | replace(from="\\'u", to="ú")
+        | replace(from="\\'A", to="Á") | replace(from="\\'E", to="É") | replace(from="\\'I", to="Í")
+        | replace(from="\\'O", to="Ó") | replace(from="\\'U", to="Ú")
+        | replace(from="\\~a", to="ã") | replace(from="\\~o", to="õ") | replace(from="\\~n", to="ñ")
+        | replace(from="\\~A", to="Ã") | replace(from="\\~O", to="Õ") | replace(from="\\~N", to="Ñ")
+        | replace(from="\\^a", to="â") | replace(from="\\^e", to="ê") | replace(from="\\^o", to="ô")
+        | replace(from="\\`a", to="à")
+        | replace(from="\\cc", to="ç") | replace(from="\\c c", to="ç")
+        | replace(from="\\\"u", to="ü") | replace(from="\\&", to="&") | replace(from="\\%", to="%")
+        | replace(from="~", to=" ")
+    -%}
+    {%- if name is containing(pat=",") -%}
+        {%- set parts = name | split(pat=",") -%}
+        {%- set first = parts[1] | trim -%}
+        {%- set last = parts[0] | trim -%}
+        {%- set_global names = [...names, first ~ " " ~ last] -%}
+    {%- else -%}
+        {%- set_global names = [...names, name] -%}
+    {%- endif -%}
+{%- endfor -%}
+{{- names | join(sep=", ") -}}
+{% endcomponent author_list %}

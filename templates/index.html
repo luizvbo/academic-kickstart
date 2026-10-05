@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+{%- if lang == config.default_language -%}
+    {%- set expected_root = "/" -%}
+{%- else -%}
+    {%- set expected_root = "/" ~ lang ~ "/" -%}
+{%- endif -%}
+{%- set is_root_section = current_path == expected_root -%}
+{%- set show_projects_first = section?.extra?.show_projects_first | default(value=false) -%}
+{%- if show_projects_first -%}
+    {%- set first_section = "projects" -%}
+{%- else -%}
+    {%- set first_section = "posts" -%}
+{%- endif -%}
+{%- if section?.extra?.section_path or paginator and projects_path -%}
+    {%- set more_than_one_section_shown = true -%}
+{%- endif -%}
+
+{#- The section content is split on named markers so the homepage order is
+    controlled from _index.md:
+      content -> "<!-- posts -->" -> content -> "<!-- publications -->" -> content -#}
+{%- set parts = section.content | split(pat="<!-- posts -->") -%}
+{%- set before_posts = "" -%}
+{%- set rest = "" -%}
+{%- for part in parts -%}
+    {%- if loop.index == 1 -%}{%- set_global before_posts = part -%}
+    {%- elif loop.index == 2 -%}{%- set_global rest = part -%}
+    {%- endif -%}
+{%- endfor -%}
+{%- set rparts = rest | split(pat="<!-- publications -->") -%}
+{%- set between_lists = "" -%}
+{%- set after_pubs = "" -%}
+{%- for part in rparts -%}
+    {%- if loop.index == 1 -%}{%- set_global between_lists = part -%}
+    {%- elif loop.index == 2 -%}{%- set_global after_pubs = part -%}
+    {%- endif -%}
+{%- endfor -%}
+
+<main class="home{% if more_than_one_section_shown %} {{ first_section }}-first{% endif %}">
+{%- if config.extra.hcard %}
+    {%- include "partials/hcard.html" -%}
+{% endif -%}
+
+{%- if section?.extra?.header %}
+<div id="banner-container-home">
+    <div id="home-banner-text">
+        <h1 id="home-banner-header">{{ section.extra.header.title }}</h1>
+        {%- if section.extra.header.subtitle -%}
+        <section id="home-banner-subtitle">{{ section.extra.header.subtitle }}</section>
+        {%- endif -%}
+    </div>
+    {%- if section.extra.header.img -%}
+    <div id="image-container-home">
+        <img alt="{{ section.extra.header.img_alt | default(value="the owner") }}" id="banner-home-img" src="{{ get_url(path=section.extra.header.img, trailing_slash=false) | safe }}" />
+    </div>
+    {%- endif -%}
+</div>
+{%- endif -%}
+
+{%- if before_posts -%}
+<section>
+    {{ before_posts | safe }}
+</section>
+{%- endif -%}
+
+{%- if between_lists -%}
+<section>
+    {{ between_lists | safe }}
+</section>
+{%- endif -%}
+
+{% if section?.extra?.section_path -%}
+    {% set extra_section = get_section(path=section?.extra?.section_path) %}
+{% endif -%}
+{% if section?.extra?.section_path -%}
+    {% set path = section?.extra?.section_path | replace(from="/_index.md", to = "") %}
+{% else -%}
+    {% set path = section.path %}
+{% endif -%}
+
+{%- if show_projects_first -%}
+    {%- include "partials/main_page_projects_list.html" -%}
+    {%- include "partials/main_page_posts_list.html" -%}
+{%- else -%}
+    {%- include "partials/main_page_posts_list.html" -%}
+    {%- include "partials/main_page_projects_list.html" -%}
+{%- endif -%}
+
+{#- Recent publications, loaded straight from the BibTeX file -#}
+{%- set data = load_data(path="content/publication/publications.bib", format="bibtex") -%}
+{%- set raw_pubs = [] -%}
+{%- for e in data.bibliographies | default(value=[]) -%}
+    {%- if e.tags and e.tags.title and e.tags.year -%}{%- set_global raw_pubs = [...raw_pubs, e] -%}{%- endif -%}
+{%- endfor -%}
+{%- set pubs = raw_pubs | sort(attribute="tags.year") | reverse -%}
+{%- if pubs -%}
+<section>
+    <h2 id="recent-publications">Recent publications</h2>
+    <ul>
+        {%- for e in pubs -%}
+        {%- if loop.index <= 5 -%}
+        <li>
+            {{< author_list s={e.tags.author} />}} ({{ e.tags.year }}).
+            <strong>{{< bibtex_clean s={e.tags.title} />}}</strong>.
+            {%- set venue = e.tags.booktitle | default(value=e.tags.journal) | default(value=e.tags.school) | default(value=e.tags.series) | default(value="") -%}
+            {%- if venue %} <em>{{< bibtex_clean s={venue} />}}</em>.{%- endif -%}
+            {%- if e.tags.url %} <a href="{{ e.tags.url }}">URL</a>{%- endif -%}
+            {%- if e.tags.doi -%}
+                {%- if e.tags.doi is starting_with(pat="http") -%}
+                    <a href="{{ e.tags.doi }}">DOI</a>
+                {%- else -%}
+                    <a href="https://doi.org/{{ e.tags.doi }}">DOI</a>
+                {%- endif -%}
+            {%- endif -%}
+        </li>
+        {%- endif -%}
+        {%- endfor -%}
+    </ul>
+    <p><a class="btn-more" href="{{ get_url(path="publication", trailing_slash=true) }}">See all publications</a></p>
+</section>
+{%- endif -%}
+
+{%- if after_pubs -%}
+<section>
+    {{ after_pubs | safe }}
+</section>
+{%- endif -%}
+</main>
+
+{%- include "partials/extra_features.html" -%}
+
+{% endblock main_content %}

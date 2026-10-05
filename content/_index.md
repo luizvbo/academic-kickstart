@@ -1,0 +1,143 @@
++++
+title = "Latest posts"
+sort_by = "date"
+
+[extra]
+header = { title = "Luiz Otavio V. B. Oliveira", subtitle = "Senior Data Engineer — ING WBAA (Wholesale Bank Advanced Analytics)", img = "img/avatar.jpg", img_alt = "Luiz Otavio V. B. Oliveira" }
+section_path = "post/_index.md"
+max_posts = 5
++++
+
+I am a Senior Data Engineer working for [ING WBAA](https://ing.com) (Wholesale Bank Advanced Analytics) in Amsterdam, Netherlands — a Brazilian solving problems using data. In my free time I'm learning Rust and building web applications with [axum](https://github.com/tokio-rs/axum).
+
+<p class="pills-label"><strong>Interests</strong></p>
+<div class="pills">
+<span>Data Engineering</span><span>Machine Learning</span><span>Natural Language Processing</span><span>Evolutionary Computation</span><span>Rust</span>
+</div>
+
+## Experience
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Senior Data Engineer</span>
+<span class="exp-org"><a href="https://ing.com">ING WBAA</a> — Amsterdam Area, Netherlands · Hybrid</span>
+<span class="exp-period">Apr 2023 — present</span></p>
+
+- **Technical leadership:** technical lead for the team's data engineering work — architecture decisions, code quality, production ownership and incident resolution, migration planning and cross-team knowledge sharing
+- **Data products & regulatory delivery:** designed and operated business-critical KYC/CDD and regulatory data products (SEPA, SWIFT, accountability); built and optimized ETL pipelines with PySpark and Airflow; kept pipelines healthy through recurring framework upgrades (Airflow v2→v3, PySpark v4)
+- **Cloud migration & platform engineering:** led the data-pipeline workstream of the migration from on-premise (DAP) to ING's Vista/GCP platform — architecture, cloud-native storage (BigQuery, GCS), orchestration (Cloud Composer) and security patterns; contributed to IaC adoption with Terraform; evaluated migration-ready design via a Kedro + Ibis PoC that shaped tooling decisions
+- **Community & speaking:** speaker at TechFest/DECONF ("Kedro + Ibis: Is This the End of Painful Data Pipeline Migrations?"), member of the DECONF organizing team; contributed to hiring via technical interviews and interviewer onboarding
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Senior Data Scientist</span>
+<span class="exp-org"><a href="https://ing.com">ING WBAA</a> — The Randstad, Netherlands</span>
+<span class="exp-period">Feb 2019 — Apr 2023</span></p>
+
+- **Hunter (AML investigation platform):** ML features and analytics for ING's anti-money-laundering investigation platform — entity resolution, country extraction and scalable fuzzy matching in Spark over millions of names, reducing false positives; led weak-supervision research (WeaSUL: Snorkel-based data programming) enabling label creation in low-ground-truth environments
+- **CodeFix (AI-assisted software security):** sole data scientist in the early phase — shaped the product's technical direction, defined the DS roadmap and established academic collaborations; built PoCs on Fortify scan data and applied NLP (word2vec, BERT-based) to source-code comprehension and vulnerability-detection false-positive reduction
+- **Holmes document search:** led deployment of a production-grade named entity recognition model powering ING's document search
+- **Model deployment & MLOps:** productionized ML models as scalable services with Docker and FastAPI; built deployment pipelines on Kedro and Airflow; helped establish machine learning engineering practices in ING Analytics; co-presented ING's MLOps strategy at the MLE Guild and delivered workshops on MLflow, Docker and production ML
+- **Research supervision & mentoring:** co-supervised MSc research on weak supervision and active learning for financial-crime analytics; mentored junior data scientists and trainees across WBAA
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Data Scientist</span>
+<span class="exp-org"><a href="https://corl.io">Corl Financial Technologies</a> — Toronto, Canada</span>
+<span class="exp-period">Mar 2018 — Nov 2018</span></p>
+
+I was involved in the process of building predictive models for investment risk in startups. The process involved:
+
+- Retrieving data from different sources, including scraping data from the web (using Selenium with Beautiful Soup)
+- Analysing data using Jupyter notebooks, pandas and matplotlib
+- Building machine learning models using Random Forest and SVM to fit our prediction problems
+- Feature selection/engineering
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Project Manager</span>
+<span class="exp-org"><a href="https://ufmg.br/">Universidade Federal de Minas Gerais</a> — Belo Horizonte, Brazil</span>
+<span class="exp-period">Mar 2018 — May 2018</span></p>
+
+Project Manager on the EU-Brazil project [ATMOSPHERE](https://www.atmosphere-eubrazil.eu/). I managed resources, followed the status of deliverables and delegated activities for three Brazilian universities: UFMG, Unicamp and UFAM.
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Contributing Researcher</span>
+<span class="exp-org"><a href="https://ufmg.br/">Universidade Federal de Minas Gerais</a> — Belo Horizonte, Brazil</span>
+<span class="exp-period">Aug 2017 — Jan 2019</span></p>
+
+I worked on two different projects with the LaIC (Computational Intelligence Laboratory) research group:
+
+1. Reducing the exponential size of solutions generated by the Geometric Semantic Genetic Programming (GSGP) framework, in order to improve their interpretability and reduce memory and computational cost.
+2. Analysing datasets used as benchmark for Genetic Programming (GP)-based methods under a data science perspective: gathering datasets employed by the main GP publications of the last five years and analysing the viability of using GP to induce regression models.
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Postdoctoral Researcher</span>
+<span class="exp-org"><a href="https://www.ucc.ie/">University College Cork</a> — Cork, Ireland</span>
+<span class="exp-period">Aug 2017 — Dec 2017</span></p>
+
+I worked on the development of autonomous tugs, capable of towing aircraft on the airport ground — from the runway to the gates during arrivals, and vice versa during departures.
+
+- Surveyed current advances in autonomous vehicles and worked on optimization of ground routes in airports
+- Worked in coordination with United Technologies
+- Worked with Python (built a parser for XML airport maps) and Java/CPLEX (route optimization)
+
+</div>
+
+<div class="exp">
+
+<p class="exp-head"><span class="exp-role">Postdoctoral Researcher</span>
+<span class="exp-org"><a href="https://ufmg.br/">Universidade Federal de Minas Gerais</a> — Belo Horizonte, Brazil</span>
+<span class="exp-period">Oct 2016 — Aug 2017</span></p>
+
+I worked with Geometric Semantic Genetic Programming (GSGP) on two main projects:
+
+1. A study investigating aspects related to the semantic distribution of the functions employed by geometric semantic operators;
+2. An investigation of the impact of different instance selection techniques on GSGP and its robustness to noisy data.
+
+This included managing a research team of three researchers, and development in Java (genetic programming framework), R (hypothesis tests and plotting) and shell script (text/data manipulation).
+
+</div>
+
+## Education
+
+- **PhD in Computer Science** — Federal University of Minas Gerais, 2016
+- **MSc in Computer Science** — Universidade Federal do Rio Grande do Sul, 2012
+- **BSc in Computer Science** — Universidade Federal de Itajubá, 2010
+
+## Accomplishments
+
+<div class="awards">
+
+- **Best Paper Award** — GECCO'16, for *A Dispersion Operator for Geometric Semantic Genetic Programming*
+- **Nomination for Best Paper Award** — GECCO'17, for *How Noisy Data Affects Geometric Semantic Genetic Programming*
+- **Nomination for Best Paper Award** — GECCO'18, for *Solving the Exponential Growth of Symbolic Regression Trees in Geometric Semantic Genetic Programming*
+- **Nomination for Best Paper Award** — EuroGP'15, for *The Effect of Distinct Geometric Semantic Crossover Operators in Regression Problems*
+
+</div>
+
+<!-- posts -->
+
+<!-- publications -->
+
+## Contact
+
+You can find me on [GitHub](https://github.com/luizvbo), [LinkedIn](https://www.linkedin.com/in/luizvbo) and [Google Scholar](https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ), or drop me an email:
+
+<details class="email-reveal"><summary>Show email address</summary>
+<p><a href="mailto:&#108;&#117;&#105;&#122;&#46;&#118;&#98;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#117;&#105;&#122;&#46;&#118;&#98;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+</details>
+
+**Office:** Frankemaheerd 2, Amsterdam, 1102AN — ING Cedar, B Tower

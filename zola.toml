@@ -1,0 +1,129 @@
+# The URL the site will be built for
+base_url = "https://luizvbo.github.io/"
+
+title = "Luiz Otavio V. B. Oliveira"
+description = "Personal website of Luiz Otavio V. B. Oliveira, Senior Data Engineer"
+author = "Luiz Otavio V. B. Oliveira"
+
+default_language = "en"
+
+theme = "tabi"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+minify_html = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+generate_feeds = true
+
+taxonomies = [{ name = "tags", feed = true }]
+
+[search]
+include_title = true
+include_description = true
+include_path = true
+include_content = true
+index_format = "elasticlunr_json"
+
+[markdown]
+bottom_footnotes = true
+smart_punctuation = true
+external_links_class = "external"
+github_alerts = true
+
+[markdown.highlighting]
+theme = "catppuccin-frappe"
+style = "class"
+error_on_missing_language = false
+
+[link_checker]
+internal_level = "warn"
+
+[extra]
+# Enable JavaScript theme toggler (dark/light mode)
+theme_switcher = true
+
+# Skin: blue, lavender, mint, red, sakura, teal, monochrome, indigo_ingot, evangelion
+skin = "teal"
+
+# Add a "copy" button to code blocks
+copy_button = true
+
+# Show author on pages (uses page.authors or config.author)
+show_author = true
+
+show_date = true
+show_reading_time = true
+
+# Show prev/next navigation at the bottom of posts
+show_previous_next_article_links = true
+
+# Favicon: PNG fallback (SVG + apple-touch-icon are linked in templates/tabi/extend_head.html)
+favicon = "favicon.png"
+
+# Custom stylesheet (compiled from sass/custom.scss) — homepage resume styling
+stylesheets = ["custom.css"]
+
+menu = [
+    { name = "posts", url = "post", trailing_slash = true },
+    { name = "experience", url = "/#experience", trailing_slash = false },
+    { name = "accomplishments", url = "/#accomplishments", trailing_slash = false },
+    { name = "publications", url = "publication", trailing_slash = true },
+    { name = "contact", url = "/#contact", trailing_slash = false },
+]
+
+# RSS icon in the footer
+feed_icon = false
+
+# Show the full post content in the Atom feed
+full_content_in_feed = false
+
+# Email address for footer's social section (auto-encoded for spam protection)
+email = "luiz.vbo@gmail.com"
+encode_plaintext_email = true
+
+# Social media links for the footer.
+# Built-in icons: https://github.com/welpo/tabi/tree/main/static/social_icons
+socials = [
+    { name = "github", url = "https://github.com/luizvbo", icon = "github" },
+    { name = "google-scholar", url = "https://scholar.google.co.uk/citations?user=c6bK3vUAAAAJ", icon = "google-scholar" },
+    { name = "linkedin", url = "https://www.linkedin.com/in/luizvbo", icon = "linkedin" },
+]
+
+footer_menu = [
+    { url = "about", name = "about", trailing_slash = true },
+    { url = "archive", name = "archive", trailing_slash = true },
+    { url = "sitemap.xml", name = "sitemap", trailing_slash = false },
+]
+
+# Copyright notice in the footer
+copyright = "$TITLE © $CURRENT_YEAR $AUTHOR"
+
+# Site repository (used for "see changes"/"source" links)
+remote_repository_url = "https://github.com/luizvbo/academic-kickstart"
+remote_repository_branch = "main"
+show_remote_source = true
+show_remote_changes = true
+
+# CSP. Note: frame-src includes 'self' because blog posts embed local
+# Plotly HTML files via <iframe>.
+allowed_domains = [
+    { directive = "font-src", domains = ["'self'", "data:"] },
+    { directive = "img-src", domains = ["'self'", "https://*", "data:"] },
+    { directive = "media-src", domains = ["'self'"] },
+    { directive = "script-src", domains = ["'self'"] },
+    { directive = "style-src", domains = ["'self'"] },
+    { directive = "frame-src", domains = ["'self'", "player.vimeo.com", "https://www.youtube-nocookie.com"] },
+]
+enable_csp = true
+
+# h-card (indieweb identity on the homepage)
+[extra.hcard]
+enable = true
+avatar = "img/avatar.jpg"
+full_name = "Luiz Otavio V. B. Oliveira"
+biography = "A Brazilian in the Netherlands solving problems using data."
+with_social_links = true

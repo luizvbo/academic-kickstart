@@ -1,14 +1,9 @@
----
-title: Posts
++++
+title = "Posts"
+sort_by = "date"
+paginate_by = 10
+insert_anchor_links = "left"
 
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-view: 3
-
-# Optional header image (relative to `static/media/` folder).
-header:
-  caption: ""
-  image: ""
----
+[extra]
+show_previous_next_article_links = true
++++

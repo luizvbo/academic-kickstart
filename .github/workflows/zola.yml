@@ -3,6 +3,8 @@ name: Deploy site to GitHub Pages
 on:
   push:
     branches: [zola-migration, master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:

@@ -106,9 +106,8 @@ DAGSTER_DEPLOYMENT_NAME=prod   uv run dagster dev   # pyspark + parquet "lake" s
 
 (The repo wraps these as `just dev <local|polars|prod>`; `dev prod` first
 seeds a local parquet lake under `data/lake/` from the CSVs (`just
-seed-lake`), and prod also needs the `pyspark` extra plus a JDK. Note that
-ibis currently pins `pyspark<4.1`, which doesn't run on Java 25; a future
-ibis release should allow Spark 4.2, the version that adds Java 25 support.)
+seed-lake`), and prod needs the `pyspark` extra plus a JDK. Version
+compatibility details live in the repo's README.)
 
 Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME`; it's an application-defined variable the repo reads itself, so configure it per deployment in Dagster+ or on your code location's environment when self-hosting). One honest boundary: a backend the repo doesn't implement yet, say BigQuery, still needs a new connection branch in `IbisResource` plus its own storage config; what stays untouched is the transform code.
 

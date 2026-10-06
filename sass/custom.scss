@@ -55,7 +55,10 @@ dialog.lightbox {
     border: none;
     background: transparent;
     max-width: 95vw;
+    max-width: 95dvw;
     max-height: 95vh;
+    max-height: 95dvh;
+    overflow: hidden;
 
     &::backdrop {
         background: rgba(0, 0, 0, 0.85);
@@ -64,9 +67,41 @@ dialog.lightbox {
     img {
         display: block;
         max-width: 95vw;
+        max-width: 95dvw;
         max-height: 90vh;
+        max-height: 90dvh;
         object-fit: contain;
         cursor: zoom-out;
+    }
+
+    // JS marks the dialog .zoomable when the image renders smaller than its
+    // natural size, i.e. there is more detail to reveal.
+    &.zoomable img {
+        cursor: zoom-in;
+    }
+
+    // Zoomed state: fill the viewport and let it scroll; wheel/trackpad and
+    // touch pan natively, pointer dragging is handled in JS.
+    &.zoomed {
+        inset: 0;
+        margin: 0;
+        max-width: none;
+        max-height: none;
+        width: auto;
+        height: auto;
+        overflow: auto;
+        overscroll-behavior: contain;
+
+        img {
+            max-width: none;
+            max-height: none;
+            cursor: grab;
+            user-select: none;
+
+            &:active {
+                cursor: grabbing;
+            }
+        }
     }
 }
 

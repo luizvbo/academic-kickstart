@@ -15,7 +15,7 @@ flowchart LR
     code -->|"deployment config<br/>swaps engine + storage"| dep
     subgraph dep["pick a backend"]
         direction TB
-        a["duckdb<br/>local csv files"] ~~~ b["polars<br/>same csv files"] ~~~ c["pyspark<br/>parquet lake"] ~~~ d["bigquery, trino, ...<br/>one more config entry"]
+        a["duckdb<br/>local csv files"] ~~~ b["polars<br/>same csv files"] ~~~ c["pyspark<br/>parquet lake"] ~~~ d["bigquery, trino, ...<br/>a new connection branch + config"]
     end
 {% </mermaid> %}
 
@@ -45,7 +45,7 @@ This post is about a small proof-of-concept repo I built to try to answer this
 question. While researching about alternatives, we found **[Ibis](https://ibis-project.org)**, a potential
 solution to minimize the migration effort. It is a dataframe-style expression
 API that compiles the same code to DuckDB SQL, Spark SQL, BigQuery SQL, Polars,
-and many other backends, totaling 20+ backends.
+and many other backends (20+ today, and the list keeps growing).
 
 Ibis minimizes the migration effort, but it's just a "translation layer". We
 needed structure and orchestration, which can be provided by a single tool,
@@ -68,8 +68,8 @@ A deliberately ordinary bronze → silver → gold pipeline:
 {% <mermaid full_width={true}> %}
 flowchart LR
     subgraph sources["External sources:<br>- CSV locally<br>- Parquet/tables in production"]
-        events_csv
-        products_csv
+        events
+        products
     end
     subgraph bronze["Bronze:<br>- Land sources into managed tables"]
         raw_events
@@ -83,8 +83,8 @@ flowchart LR
         category_revenue
         latest_event_per_user["latest_event_per_user*"]
     end
-    events_csv --> raw_events
-    products_csv --> raw_products
+    events --> raw_events
+    products --> raw_products
     raw_events --> cleaned_events
     cleaned_events --> daily_active_users
     cleaned_events --> category_revenue
@@ -94,9 +94,9 @@ flowchart LR
 
 \* we'll come back to that asterisk (`latest_event_per_user`). It's the most interesting part.
 
-![](img/global-asset-lineage.svg)
+![Dagster asset lineage: external event and product sources feeding bronze, silver, and gold assets](img/global-asset-lineage.svg)
 
-The entire engine/env selection is two environment variables:
+Each deployment bundles backend and storage configuration; selecting one takes a single environment variable:
 
 ```bash
 DAGSTER_DEPLOYMENT_NAME=local  uv run dagster dev   # duckdb + local CSVs
@@ -110,7 +110,7 @@ seed-lake`), and prod also needs the `pyspark` extra plus a JDK. Note that
 ibis currently pins `pyspark<4.1`, which doesn't run on Java 25; a future
 ibis release should allow Spark 4.2, the version that adds Java 25 support.)
 
-Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME`; Dagster+ sets it automatically, and on a self-hosted OSS deployment it's just another env var on your code location).
+Same code. Same asset graph. Same checks. Different engine and different storage, selected by deployment config, the documented Dagster pattern (`resources_by_deployment`, keyed on `DAGSTER_DEPLOYMENT_NAME`; it's an application-defined variable the repo reads itself, so configure it per deployment in Dagster+ or on your code location's environment when self-hosting). One honest boundary: a backend the repo doesn't implement yet, say BigQuery, still needs a new connection branch in `IbisResource` plus its own storage config; what stays untouched is the transform code.
 
 ## The three pieces
 
@@ -133,7 +133,7 @@ def clean_events(raw_events: ir.Table) -> ir.Table:
     )
 ```
 
-No `duckdb.`, no `spark.`, no `pl.` anywhere. These functions are pure `Table -> Table` expressions. They don't even know which backend they'll run on until Dagster binds a connection at runtime.
+No `duckdb.`, no `spark.`, no `pl.` anywhere. These functions are pure `Table -> Table` expressions. They're also lazy: they build an expression tree, and execution only happens later, when the IO manager asks the selected backend to materialize it. That's what makes the separation work. They don't even know which backend they'll run on until Dagster binds a connection at runtime.
 
 ### 2. An IO manager owns all data I/O
 
@@ -147,9 +147,9 @@ So "the same pipeline, but sources are parquet in a lake in prod" is literally j
 ```python
 # resources_by_deployment: same logical source, different physical read
 "local": IbisIOManager(
-    sources={"events_csv": {"format": "csv",     "path": "data/raw_events.csv"}}, ...),
+    sources={"events": {"format": "csv",     "path": "data/raw_events.csv"}}, ...),
 "prod":  IbisIOManager(
-    sources={"events_csv": {"format": "parquet", "path": "${DATA_LAKE}/landing/events/"}}, ...),
+    sources={"events": {"format": "parquet", "path": "${DATA_LAKE}/landing/events/"}}, ...),
 ```
 
 ### 3. Quality gates are portable too
@@ -236,7 +236,7 @@ Fair question. dbt solves a big chunk of this. The honest comparison:
 | Transform language                    | SQL                                     | Python expressions → SQL/plans   |
 | Engine portability                    | per-adapter SQL macros                  | one expression → many dialects   |
 | Non-SQL engines                       | no                                      | yes (Polars, DataFusion…)        |
-| Python-native logic (ML, APIs, files) | bolted on                               | first-class (the same graph)     |
+| Python-native logic (ML, APIs, files) | adapter-dependent Python models         | first-class (the same graph)     |
 | Tests                                 | `dbt test`                              | `@asset_check`                   |
 | Scheduling                            | needs dbt Cloud / external orchestrator | native (schedules, sensors)      |
 | Incremental models                    | `dbt run` incremental                   | partitions + automation policies |
@@ -249,12 +249,13 @@ If your transforms are pure SQL and your targets are SQL warehouses, dbt is simp
 - **The port isn't free.** Existing `spark.sql`/DataFrame/UDF code must be rewritten as Ibis expressions. The payoff is that it's potentially the last port.
 - **Semantics differ subtly per backend** (see the zero-based `row_number` story). Also type inference on file reads (we added portable casts to absorb that).
 - **Performance isn't portable.** One expression compiles to all engines, but partitioning, clustering, broadcast hints, etc. are still per-engine work.
-- **Some plumbing is real**: e.g., Polars tables live per-connection and DuckDB files allow one writer, so the demo uses the in-process executor and a cached connection.
+- **Some plumbing is real**: e.g., Polars tables live per-connection and DuckDB files allow one writer, so the demo uses the in-process executor and a process-scoped cached connection.
+- **Writes are full-refresh.** The demo uses `create_table(..., overwrite=True)`; incremental loads, partitioning, and merge semantics would be backend-aware work on top.
 
 ## Takeaways
 
-- **Ibis gives you a portability contract for transformation logic**: same expressions, engine as config. Parametrized tests that run every transform on every backend turn "portable" from a claim into a checked property.
-- **Dagster supplies the dbt-shaped structure**: assets as models, `deps` as `ref()`, `@asset_check` as tests, schedules instead of cron.
+- **Ibis gives you a portability contract for transformation logic**: same expressions, engine as config. Parametrized tests that run every transform on every available backend, plus offline dialect compiles for targets you can't run locally, turn "portable" from a claim into a checked property.
+- **Dagster supplies a structure that will feel familiar to dbt users**: assets as models, `deps` ≈ `ref()`, `@asset_check` as tests, schedules instead of cron.
 - **The boundary is visible and fails safely**: unsupported ops raise `OperationNotDefinedError` at translate time, and the repo shows three ways to handle it.
 - **The real pitch isn't "write once, run anywhere"**, it's "port once, never rewrite again," plus knowing exactly where "anywhere" ends.
 

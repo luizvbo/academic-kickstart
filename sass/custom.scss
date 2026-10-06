@@ -74,6 +74,37 @@ dialog.lightbox {
         cursor: zoom-out;
     }
 
+    // Pinned to the viewport corner so it stays reachable while panning.
+    button.lightbox-close {
+        position: fixed;
+        top: calc(0.9rem + env(safe-area-inset-top));
+        right: calc(0.9rem + env(safe-area-inset-right));
+        z-index: 1;
+        width: 2.6rem;
+        height: 2.6rem;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        border: none;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        &:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+
+        svg {
+            display: block;
+        }
+    }
+
     // JS marks the dialog .zoomable when the image renders smaller than its
     // natural size, i.e. there is more detail to reveal.
     &.zoomable img {

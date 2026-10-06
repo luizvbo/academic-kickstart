@@ -14,7 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     big.draggable = false;
     big.tabIndex = 0;
     dialog.appendChild(big);
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'lightbox-close';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.innerHTML =
+        '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" ' +
+        'stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
+        'aria-hidden="true"><path d="M4 4l10 10M14 4L4 14"/></svg>';
+    dialog.appendChild(closeBtn);
     document.body.appendChild(dialog);
+
+    let drag = null;
+    let dragged = false;
 
     // True when the fitted image is downscaled from its natural size, i.e.
     // zooming would reveal more detail. clientWidth/Height force layout, so
@@ -41,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const open = (img) => {
         unzoom();
+        dragged = false;
         big.src = img.src;
         big.alt = img.alt || '';
         dialog.showModal();
@@ -52,8 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Drag to pan while zoomed. Touch pointers fall back to native scrolling
     // (the browser fires pointercancel and scrolls the dialog itself).
-    let drag = null;
-    let dragged = false;
     big.addEventListener('pointerdown', (e) => {
         if (e.button !== 0 || !dialog.classList.contains('zoomed')) return;
         drag = { x: e.clientX, y: e.clientY, l: dialog.scrollLeft, t: dialog.scrollTop };
@@ -92,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === dialog) return dialog.close();
         if (e.target === big) activate(e);
     });
+
+    closeBtn.addEventListener('click', () => dialog.close());
 
     big.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {

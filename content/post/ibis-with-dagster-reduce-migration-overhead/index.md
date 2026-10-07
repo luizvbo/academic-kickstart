@@ -40,11 +40,11 @@ This post is about a small proof-of-concept repo I built to try to answer this
 question. While evaluating alternatives, I found **[Ibis](https://ibis-project.org)**, a potential
 solution to minimize the migration effort. It is a dataframe-style expression
 API that compiles the same code to DuckDB SQL, Spark SQL, BigQuery SQL, Polars,
-and many other backends (20+ today, and the list keeps growing).
+and many other backends.
 
-Ibis minimizes the migration effort, but it's just a "translation layer". The
-experiment also needed structure and orchestration, the part teams often fill
-with an orchestrator plus in-house framework code.
+Ibis minimizes the migration effort, but a translation layer alone doesn't
+run a pipeline. The experiment also needed structure and orchestration, the
+part teams often fill with an orchestrator plus in-house framework code.
 **[Dagster](https://dagster.io)** can provide that with many features provided
 out-of-the-box. It is an orchestrator built around software-defined assets, giving
 the structure dbt users are used to: models, lineage, tests, schedules.
@@ -131,14 +131,14 @@ def clean_events(raw_events: ir.Table) -> ir.Table:
     )
 ```
 
-No `duckdb.`, no `spark.`, no `pl.` anywhere. These functions are pure `Table -> Table` expressions. They're also lazy: they build an expression tree, and execution only happens later, when the IO manager asks the selected backend to materialize it. That's what makes the separation work. They don't even know which backend they'll run on until Dagster binds a connection at runtime.
+No `duckdb.`, no `spark.`, no `pl.` anywhere. These functions are lazy `Table -> Table` expressions with no backend or storage logic: they build an expression tree, and execution happens only when the IO manager asks the selected backend to materialize it. They don't even know which backend they'll run on until Dagster binds a connection at runtime.
 
 ### 2. An IO manager owns all data I/O
 
 This is the Dagster-native answer to dbt's "where does this model land" or Kedro's catalog. Assets declare inputs/outputs as `ir.Table`; `IbisIOManager` (a `ConfigurableIOManager`) handles persistence:
 
 - `load_input` → `con.table(name)` for pipeline tables, or `con.read_csv/read_parquet/...` for external sources configured per deployment
-- `handle_output` → `con.create_table(asset_name, expr, overwrite=True)` plus metadata (row count, preview, **the compiled SQL**)
+- `handle_output` → `con.create_table(asset_name, expr, overwrite=True)` plus metadata (row count, preview, **compiled SQL** where the backend produces SQL)
 
 So "the same pipeline, but sources are parquet in a lake in prod" is literally just:
 
@@ -165,13 +165,13 @@ def cleaned_events_no_null_user_ids(ibis: IbisResource) -> dg.AssetCheckResult:
 
 <!-- IMAGE: screenshot of the Checks tab / a run showing the 8 asset checks green -->
 
-The repo implements the usual dbt generic tests `not_null`, `unique`, `accepted_values`, `relationships` (an anti-join), plus a couple of custom checks. Marking the not-null check `blocking=True` reproduces `dbt build` semantics: if it fails, downstream assets don't materialize.
+The repo implements the usual dbt generic tests `not_null`, `unique`, `accepted_values`, `relationships` (an anti-join), plus a couple of custom checks. Marking the not-null check `blocking=True` gives behavior analogous to a `dbt build` quality gate: if it fails, downstream assets don't materialize.
 
 And since Dagster is an orchestrator, scheduling is native too: the repo ships a `daily_schedule` (`0 6 * * *`) covering the whole job, stopped by default so it can be toggled on from the UI.
 
 ## The "aha": one expression, three dialects
 
-This is the part that sells it. The same `daily_active_users(clean_events(raw_events))` expression is compiled offline. **No engine, no credentials, no JVM**:
+This is the part that sells it. The same `daily_active_users(clean_events(raw_events))` expression is compiled offline. **No running engine, no credentials, no JVM** (the backend packages still have to be installed):
 
 ```sql
 -- duckdb
@@ -186,7 +186,7 @@ This is the part that sells it. The same `daily_active_users(clean_events(raw_ev
 
 <!-- IMAGE (optional): screenshot of a materialization's metadata tab showing the compiled SQL recorded on the run -->
 
-This isn't just a demo trick. `ibis.<backend>.compile()` works without connecting, so a `pytest` file that compiles every transform against every target dialect is a **CI guardrail**. If someone adds an operation your production engine can't express, it fails before deployment, not after. The repo wires this in concretely: a `prek` pre-push hook runs lint (ruff), type-checking (ty), and that test suite on every push.
+This isn't just a demo trick. `ibis.<backend>.compile()` works without connecting, so a `pytest` file that compiles every transform against every target dialect is a **CI guardrail for translatability**: if someone adds an operation a target compiler can't express, it fails before deployment, not after. (Semantic and connector differences are what the runtime tests cover.) The repo wires this in concretely: a `prek` pre-push hook runs lint (ruff), type-checking (ty), and that test suite on every push.
 
 ## The honest part: portability has edges
 
@@ -216,10 +216,10 @@ Two things make this acceptable, even good:
    - _Rewrite portably_: "latest per group" is `group_by` + `join`
      (`latest_event_per_user_portable` in the repo). Clunkier, but runs
      everywhere.
-   - _Localize a backend branch_: `ibis.get_backend(t).name` inside a transform
+   - _Localize a backend-specific branch_: `ibis.get_backend(t).name` inside a transform
      tells you which engine you're bound to. It's ugly, but contained to one
-     function
-   - _Engine-scope the asset_: accept that a given deployment can't materialize it
+     function.
+   - _Scope the asset to supported engines_: accept that a given deployment can't materialize it.
 
 A more subtle gotcha I hit the hard way: `ibis.row_number()` is **zero-based**. It compiles to `ROW_NUMBER() - 1`. `rn == 1` silently gives you the _second_-latest row. Abstraction means portable _syntax_; you still need to learn the portable _semantics_.
 
@@ -240,11 +240,11 @@ Fair question. dbt solves a big chunk of this. The honest comparison:
 | Incremental models                    | `dbt run` incremental                   | partitions + automation policies |
 | Ecosystem maturity                    | bigger                                  | younger                          |
 
-If your transforms are pure SQL and your targets are SQL warehouses, dbt is simpler and battle-tested and you should consider it. The Dagster + Ibis combo wins when: your logic outgrows SQL, you want one lineage graph spanning tables _and_ non-table work, or (the motivation behind this example) you're tired of paying a rewrite tax on every engine migration.
+If your transforms are pure SQL and your targets are SQL warehouses, dbt is simpler and battle-tested and you should consider it. The Dagster + Ibis combo becomes attractive when: your logic outgrows SQL, you want one lineage graph spanning tables _and_ non-table work, or (the motivation behind this example) you're tired of paying a rewrite tax on every engine migration.
 
 ## Caveats worth stating
 
-- **The port isn't free.** Existing `spark.sql`/DataFrame/UDF code must be rewritten as Ibis expressions. The payoff is that it's potentially the last port.
+- **The port isn't free.** Existing `spark.sql`/DataFrame/UDF code must be rewritten as Ibis expressions. The payoff is that each future engine change becomes smaller, more localized work.
 - **Semantics differ subtly per backend** (see the zero-based `row_number` story). Also type inference on file reads (the demo added portable casts to absorb that).
 - **Performance isn't portable.** One expression compiles to all engines, but partitioning, clustering, broadcast hints, etc. are still per-engine work.
 - **Some plumbing is real**: e.g., Polars tables live per-connection and DuckDB files allow one writer, so the demo uses the in-process executor and a process-scoped cached connection.
@@ -252,7 +252,7 @@ If your transforms are pure SQL and your targets are SQL warehouses, dbt is simp
 
 ## Takeaways
 
-- **Ibis gives you a portability contract for transformation logic**: same expressions, engine as config. Parametrized tests that run every transform on every available backend, plus offline dialect compiles for targets you can't run locally, turn "portable" from a claim into a checked property.
+- **Ibis gives you a portability contract for transformation logic**: same expressions, engine as config. Parametrized tests that run every transform on every available backend, plus offline dialect compiles for targets you can't run locally, turn "portable" from a claim into a tested property.
 - **Dagster supplies a structure that will feel familiar to dbt users**: assets as models, `deps` ≈ `ref()`, `@asset_check` as tests, schedules instead of cron.
 - **The boundary is visible and fails safely**: unsupported ops raise `OperationNotDefinedError` at translate time, and the repo shows three ways to handle it.
 - **The real pitch isn't "write once, run anywhere"**, it's "port once, and the next migration rewrites config and integration points, not the transformation logic," plus knowing exactly where "anywhere" ends.
